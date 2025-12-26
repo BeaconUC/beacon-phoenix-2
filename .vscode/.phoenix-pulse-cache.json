@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "timestamp": 1766661038282,
+  "timestamp": 1766744017722,
   "workspaceRoot": "/app",
   "registries": {
     "components": {
@@ -666,6 +666,10 @@
           []
         ],
         [
+          "/app/priv/repo/migrations/20251226092205_create_users_auth_tables.exs",
+          []
+        ],
+        [
           "/app/lib/beacon_web/controllers/page_html.ex",
           []
         ]
@@ -674,28 +678,404 @@
         "/app/lib/beacon_web/components/core_components.ex": "6e7ec9a66dd1f37841b27bb5e21c4281a436022b",
         "/app/lib/beacon_web/components/layouts.ex": "cf77b241ccf54e97a08952f67d5e9293cab9ec06",
         "/app/lib/beacon_web/controllers/error_html.ex": "52e4f592b285260745b064fa1ab0a7f028a6e138",
+        "/app/priv/repo/migrations/20251226092205_create_users_auth_tables.exs": "c3daf0b6de946fb27049a37b3f3d044a8ce9bc1d",
         "/app/lib/beacon_web/controllers/page_html.ex": "c96dc0c78d74d963e168af7082a6d4a621328b34"
       },
       "workspaceRoot": "/app"
     },
     "schemas": {
-      "schemas": [],
-      "schemasByFile": [],
-      "fileHashes": {},
+      "schemas": [
+        [
+          "Beacon.Accounts.User",
+          {
+            "moduleName": "Beacon.Accounts.User",
+            "tableName": "users",
+            "fields": [
+              {
+                "name": "email",
+                "type": "string"
+              },
+              {
+                "name": "password",
+                "type": "string"
+              },
+              {
+                "name": "hashed_password",
+                "type": "string"
+              },
+              {
+                "name": "confirmed_at",
+                "type": "utc_datetime"
+              },
+              {
+                "name": "authenticated_at",
+                "type": "utc_datetime"
+              },
+              {
+                "name": "inserted_at",
+                "type": "naive_datetime"
+              },
+              {
+                "name": "updated_at",
+                "type": "naive_datetime"
+              },
+              {
+                "name": "id",
+                "type": "id"
+              }
+            ],
+            "associations": {},
+            "associationsDetailed": [],
+            "aliases": {},
+            "filePath": "/app/lib/beacon/accounts/user.ex",
+            "line": 5
+          }
+        ],
+        [
+          "Beacon.Accounts.UserToken",
+          {
+            "moduleName": "Beacon.Accounts.UserToken",
+            "tableName": "users_tokens",
+            "fields": [
+              {
+                "name": "token",
+                "type": "binary"
+              },
+              {
+                "name": "context",
+                "type": "string"
+              },
+              {
+                "name": "sent_to",
+                "type": "string"
+              },
+              {
+                "name": "authenticated_at",
+                "type": "utc_datetime"
+              },
+              {
+                "name": "user",
+                "type": "assoc",
+                "elixirType": "Beacon.Accounts.User"
+              },
+              {
+                "name": "inserted_at",
+                "type": "naive_datetime"
+              },
+              {
+                "name": "updated_at",
+                "type": "naive_datetime"
+              },
+              {
+                "name": "id",
+                "type": "id"
+              }
+            ],
+            "associations": {},
+            "associationsDetailed": [
+              {
+                "fieldName": "user",
+                "targetModule": "Beacon.Accounts.User",
+                "type": "belongs_to"
+              }
+            ],
+            "aliases": {},
+            "filePath": "/app/lib/beacon/accounts/user_token.ex",
+            "line": 15
+          }
+        ]
+      ],
+      "schemasByFile": [
+        [
+          "/app/lib/beacon/accounts/user.ex",
+          [
+            {
+              "moduleName": "Beacon.Accounts.User",
+              "tableName": "users",
+              "fields": [
+                {
+                  "name": "email",
+                  "type": "string"
+                },
+                {
+                  "name": "password",
+                  "type": "string"
+                },
+                {
+                  "name": "hashed_password",
+                  "type": "string"
+                },
+                {
+                  "name": "confirmed_at",
+                  "type": "utc_datetime"
+                },
+                {
+                  "name": "authenticated_at",
+                  "type": "utc_datetime"
+                },
+                {
+                  "name": "inserted_at",
+                  "type": "naive_datetime"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "naive_datetime"
+                },
+                {
+                  "name": "id",
+                  "type": "id"
+                }
+              ],
+              "associations": {},
+              "associationsDetailed": [],
+              "aliases": {},
+              "filePath": "/app/lib/beacon/accounts/user.ex",
+              "line": 5
+            }
+          ]
+        ],
+        [
+          "/app/lib/beacon/accounts/user_token.ex",
+          [
+            {
+              "moduleName": "Beacon.Accounts.UserToken",
+              "tableName": "users_tokens",
+              "fields": [
+                {
+                  "name": "token",
+                  "type": "binary"
+                },
+                {
+                  "name": "context",
+                  "type": "string"
+                },
+                {
+                  "name": "sent_to",
+                  "type": "string"
+                },
+                {
+                  "name": "authenticated_at",
+                  "type": "utc_datetime"
+                },
+                {
+                  "name": "user",
+                  "type": "assoc",
+                  "elixirType": "Beacon.Accounts.User"
+                },
+                {
+                  "name": "inserted_at",
+                  "type": "naive_datetime"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "naive_datetime"
+                },
+                {
+                  "name": "id",
+                  "type": "id"
+                }
+              ],
+              "associations": {},
+              "associationsDetailed": [
+                {
+                  "fieldName": "user",
+                  "targetModule": "Beacon.Accounts.User",
+                  "type": "belongs_to"
+                }
+              ],
+              "aliases": {},
+              "filePath": "/app/lib/beacon/accounts/user_token.ex",
+              "line": 15
+            }
+          ]
+        ]
+      ],
+      "fileHashes": {
+        "/app/lib/beacon/accounts/user.ex": "61d4e07f7bd817fc410dec8ab980225e03f148cc",
+        "/app/lib/beacon/accounts/user_token.ex": "61a11812ac54a563d001c315bd1711c3f5d82955"
+      },
       "workspaceRoot": "/app"
     },
     "events": {
-      "events": [],
-      "fileHashes": {},
+      "events": [
+        [
+          "/app/lib/beacon_web/live/user_live/login.ex",
+          [
+            {
+              "name": "submit_magic",
+              "filePath": "/app/lib/beacon_web/live/user_live/login.ex",
+              "moduleName": "BeaconWeb.UserLive.Login",
+              "line": 111,
+              "params": "%{}",
+              "kind": "handle_event",
+              "nameKind": "string"
+            },
+            {
+              "name": "submit_password",
+              "filePath": "/app/lib/beacon_web/live/user_live/login.ex",
+              "moduleName": "BeaconWeb.UserLive.Login",
+              "line": 107,
+              "params": "_params",
+              "kind": "handle_event",
+              "nameKind": "string"
+            }
+          ]
+        ],
+        [
+          "/app/lib/beacon_web/live/user_live/settings.ex",
+          [
+            {
+              "name": "update_password",
+              "filePath": "/app/lib/beacon_web/live/user_live/settings.ex",
+              "moduleName": "BeaconWeb.UserLive.Settings",
+              "line": 144,
+              "params": "params",
+              "kind": "handle_event",
+              "nameKind": "string"
+            },
+            {
+              "name": "validate_password",
+              "filePath": "/app/lib/beacon_web/live/user_live/settings.ex",
+              "moduleName": "BeaconWeb.UserLive.Settings",
+              "line": 132,
+              "params": "params",
+              "kind": "handle_event",
+              "nameKind": "string"
+            },
+            {
+              "name": "update_email",
+              "filePath": "/app/lib/beacon_web/live/user_live/settings.ex",
+              "moduleName": "BeaconWeb.UserLive.Settings",
+              "line": 111,
+              "params": "params",
+              "kind": "handle_event",
+              "nameKind": "string"
+            },
+            {
+              "name": "validate_email",
+              "filePath": "/app/lib/beacon_web/live/user_live/settings.ex",
+              "moduleName": "BeaconWeb.UserLive.Settings",
+              "line": 99,
+              "params": "params",
+              "kind": "handle_event",
+              "nameKind": "string"
+            }
+          ]
+        ],
+        [
+          "/app/lib/beacon_web/live/user_live/registration.ex",
+          [
+            {
+              "name": "validate",
+              "filePath": "/app/lib/beacon_web/live/user_live/registration.ex",
+              "moduleName": "BeaconWeb.UserLive.Registration",
+              "line": 79,
+              "params": "%{}",
+              "kind": "handle_event",
+              "nameKind": "string"
+            },
+            {
+              "name": "save",
+              "filePath": "/app/lib/beacon_web/live/user_live/registration.ex",
+              "moduleName": "BeaconWeb.UserLive.Registration",
+              "line": 57,
+              "params": "%{}",
+              "kind": "handle_event",
+              "nameKind": "string"
+            }
+          ]
+        ],
+        [
+          "/app/lib/beacon_web/live/user_live/confirmation.ex",
+          [
+            {
+              "name": "submit",
+              "filePath": "/app/lib/beacon_web/live/user_live/confirmation.ex",
+              "moduleName": "BeaconWeb.UserLive.Confirmation",
+              "line": 91,
+              "params": "%{}",
+              "kind": "handle_event",
+              "nameKind": "string"
+            }
+          ]
+        ],
+        [
+          "/app/test/beacon_web/live/user_live/confirmation_test.exs",
+          []
+        ],
+        [
+          "/app/test/beacon_web/live/user_live/settings_test.exs",
+          []
+        ],
+        [
+          "/app/test/beacon_web/live/user_live/login_test.exs",
+          []
+        ],
+        [
+          "/app/test/beacon_web/live/user_live/registration_test.exs",
+          []
+        ],
+        [
+          "/app/priv/repo/migrations/20251226092205_create_users_auth_tables.exs",
+          []
+        ]
+      ],
+      "fileHashes": {
+        "/app/lib/beacon_web/live/user_live/login.ex": "03f3be15d9cb5422e57d1eca855f3e684b99b066",
+        "/app/lib/beacon_web/live/user_live/settings.ex": "056eaa045b075e5ff183644625bdda6a51e29ffa",
+        "/app/lib/beacon_web/live/user_live/registration.ex": "c25601ade160f1e543edb15f8427a1725ddc4a1a",
+        "/app/lib/beacon_web/live/user_live/confirmation.ex": "7269977901a64d6b05065fa37c61209db38a9b0b",
+        "/app/test/beacon_web/live/user_live/confirmation_test.exs": "b9732eea95258dd7e392919d613e1c64579b25fa",
+        "/app/test/beacon_web/live/user_live/settings_test.exs": "5be17a7bd6b67a61f5a6abf88581846b3ea78f86",
+        "/app/test/beacon_web/live/user_live/login_test.exs": "2d1635ede266b19361fe5ecc73f464756dbc42f0",
+        "/app/test/beacon_web/live/user_live/registration_test.exs": "1e24a15a15ba1f6207fb9e6bffb7acb0461d77cb",
+        "/app/priv/repo/migrations/20251226092205_create_users_auth_tables.exs": "c3daf0b6de946fb27049a37b3f3d044a8ce9bc1d"
+      },
       "workspaceRoot": "/app"
     },
     "routes": {
       "routes": [
         {
+          "path": "/users/log-out",
+          "verb": "DELETE",
+          "filePath": "/app/lib/beacon_web/router.ex",
+          "line": 73,
+          "helperBase": "users_log_out",
+          "params": [],
+          "isResource": false,
+          "controller": "UserSessionController",
+          "action": "delete",
+          "scopePath": "/"
+        },
+        {
+          "path": "/users/log-in",
+          "verb": "POST",
+          "filePath": "/app/lib/beacon_web/router.ex",
+          "line": 72,
+          "helperBase": "users_log_in",
+          "params": [],
+          "isResource": false,
+          "controller": "UserSessionController",
+          "action": "create",
+          "scopePath": "/"
+        },
+        {
+          "path": "/users/update-password",
+          "verb": "POST",
+          "filePath": "/app/lib/beacon_web/router.ex",
+          "line": 59,
+          "helperBase": "users_update_password",
+          "params": [],
+          "isResource": false,
+          "controller": "UserSessionController",
+          "action": "update_password",
+          "scopePath": "/"
+        },
+        {
           "path": "/",
           "verb": "GET",
           "filePath": "/app/lib/beacon_web/router.ex",
-          "line": 20,
+          "line": 23,
           "helperBase": "root",
           "params": [],
           "isResource": false,
@@ -705,12 +1085,16 @@
         }
       ],
       "fileHashes": {
-        "/app/lib/beacon_web/router.ex": "02662a879324cda9c2f46dda58e7225147aca45e"
+        "/app/lib/beacon_web/router.ex": "5fc70937b585fb1acd2892691aa6d30aeb53c2b0"
       },
       "workspaceRoot": "/app"
     },
     "controllers": {
       "rendersByFile": [
+        [
+          "/app/lib/beacon_web/controllers/user_session_controller.ex",
+          []
+        ],
         [
           "/app/lib/beacon_web/controllers/page_controller.ex",
           [
@@ -749,6 +1133,7 @@
         ]
       ],
       "fileHashes": {
+        "/app/lib/beacon_web/controllers/user_session_controller.ex": "430b281207ed28c6d200720358224a18985e082a",
         "/app/lib/beacon_web/controllers/page_controller.ex": "cbcb730e26f5c544d145dfcc758309c2f4387909"
       },
       "workspaceRoot": "/app"
@@ -790,8 +1175,171 @@
       "workspaceRoot": "/app"
     },
     "liveview": {
-      "liveViews": [],
-      "fileHashes": {},
+      "liveViews": [
+        [
+          "/app/lib/beacon_web/live/user_live/login.ex",
+          {
+            "module": "BeaconWeb.UserLive.Login",
+            "filePath": "/app/lib/beacon_web/live/user_live/login.ex",
+            "functions": [
+              {
+                "line": 111,
+                "name": "submit_magic",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Login",
+                "event_name": "submit_magic"
+              },
+              {
+                "line": 107,
+                "name": "submit_password",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Login",
+                "event_name": "submit_password"
+              },
+              {
+                "line": 96,
+                "name": "mount",
+                "type": "mount",
+                "module_name": "BeaconWeb.UserLive.Login"
+              },
+              {
+                "line": 7,
+                "name": "render",
+                "type": "render",
+                "module_name": "BeaconWeb.UserLive.Login"
+              }
+            ]
+          }
+        ],
+        [
+          "/app/lib/beacon_web/live/user_live/confirmation.ex",
+          {
+            "module": "BeaconWeb.UserLive.Confirmation",
+            "filePath": "/app/lib/beacon_web/live/user_live/confirmation.ex",
+            "functions": [
+              {
+                "line": 91,
+                "name": "submit",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Confirmation",
+                "event_name": "submit"
+              },
+              {
+                "line": 76,
+                "name": "mount",
+                "type": "mount",
+                "module_name": "BeaconWeb.UserLive.Confirmation"
+              },
+              {
+                "line": 7,
+                "name": "render",
+                "type": "render",
+                "module_name": "BeaconWeb.UserLive.Confirmation"
+              }
+            ]
+          }
+        ],
+        [
+          "/app/lib/beacon_web/live/user_live/registration.ex",
+          {
+            "module": "BeaconWeb.UserLive.Registration",
+            "filePath": "/app/lib/beacon_web/live/user_live/registration.ex",
+            "functions": [
+              {
+                "line": 79,
+                "name": "validate",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Registration",
+                "event_name": "validate"
+              },
+              {
+                "line": 57,
+                "name": "save",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Registration",
+                "event_name": "save"
+              },
+              {
+                "line": 50,
+                "name": "mount",
+                "type": "mount",
+                "module_name": "BeaconWeb.UserLive.Registration"
+              },
+              {
+                "line": 8,
+                "name": "render",
+                "type": "render",
+                "module_name": "BeaconWeb.UserLive.Registration"
+              }
+            ]
+          }
+        ],
+        [
+          "/app/lib/beacon_web/live/user_live/settings.ex",
+          {
+            "module": "BeaconWeb.UserLive.Settings",
+            "filePath": "/app/lib/beacon_web/live/user_live/settings.ex",
+            "functions": [
+              {
+                "line": 144,
+                "name": "update_password",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Settings",
+                "event_name": "update_password"
+              },
+              {
+                "line": 132,
+                "name": "validate_password",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Settings",
+                "event_name": "validate_password"
+              },
+              {
+                "line": 111,
+                "name": "update_email",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Settings",
+                "event_name": "update_email"
+              },
+              {
+                "line": 99,
+                "name": "validate_email",
+                "type": "handle_event",
+                "module_name": "BeaconWeb.UserLive.Settings",
+                "event_name": "validate_email"
+              },
+              {
+                "line": 83,
+                "name": "mount",
+                "type": "mount",
+                "module_name": "BeaconWeb.UserLive.Settings"
+              },
+              {
+                "line": 70,
+                "name": "mount",
+                "type": "mount",
+                "module_name": "BeaconWeb.UserLive.Settings"
+              },
+              {
+                "line": 9,
+                "name": "render",
+                "type": "render",
+                "module_name": "BeaconWeb.UserLive.Settings"
+              }
+            ]
+          }
+        ]
+      ],
+      "fileHashes": {
+        "/app/lib/beacon_web/live/user_live/login.ex": "03f3be15d9cb5422e57d1eca855f3e684b99b066",
+        "/app/lib/beacon_web/live/user_live/confirmation.ex": "7269977901a64d6b05065fa37c61209db38a9b0b",
+        "/app/test/beacon_web/live/user_live/confirmation_test.exs": "b9732eea95258dd7e392919d613e1c64579b25fa",
+        "/app/test/beacon_web/live/user_live/login_test.exs": "2d1635ede266b19361fe5ecc73f464756dbc42f0",
+        "/app/lib/beacon_web/live/user_live/registration.ex": "c25601ade160f1e543edb15f8427a1725ddc4a1a",
+        "/app/lib/beacon_web/live/user_live/settings.ex": "056eaa045b075e5ff183644625bdda6a51e29ffa",
+        "/app/test/beacon_web/live/user_live/settings_test.exs": "5be17a7bd6b67a61f5a6abf88581846b3ea78f86",
+        "/app/test/beacon_web/live/user_live/registration_test.exs": "1e24a15a15ba1f6207fb9e6bffb7acb0461d77cb"
+      },
       "workspaceRoot": "/app"
     }
   },
