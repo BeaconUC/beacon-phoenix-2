@@ -1,0 +1,19 @@
+networks:
+  beacon-dev:
+    external: true
+
+services:
+  app:
+    container_name: beacon-phoenix
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/app
+      - vscode-extension:/root/.vscode-server-insiders
+    command: sleep infinity
+    networks:
+      - beacon-dev
+
+volumes:
+  vscode-extension:

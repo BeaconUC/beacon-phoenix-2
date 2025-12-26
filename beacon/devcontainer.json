@@ -1,0 +1,36 @@
+{
+    "name": "Beacon",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/app",
+
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+
+    "mounts": [
+        "source=${localEnv:HOME}/.gitconfig,target=/home/debian/.gitconfig,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh/id_ed25519,target=/home/debian/.ssh/id_ed25519,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh/id_ed25519_signing,target=/home/debian/.ssh/id_ed25519_signing,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh/id_ed25519_signing.pub,target=/home/debian/.ssh/id_ed25519_signing.pub,type=bind,consistency=cached"
+    ],
+
+    "forwardPorts": [4000],
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "jakebecker.elixir-ls",
+                "phoenixframework.phoenix",
+                "onsever.phoenix-pulse",
+                "oderwat.indent-rainbow"
+            ]
+        }
+    },
+
+    "postCreateCommand": "git config --global --add safe.directory /app"
+}
