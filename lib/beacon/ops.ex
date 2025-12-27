@@ -7,40 +7,17 @@ defmodule Beacon.Ops do
   alias Beacon.Repo
 
   alias Beacon.Ops.Outage
-  alias Beacon.Accounts.Scope
-
-  @doc """
-  Subscribes to scoped notifications about any outage changes.
-
-  The broadcasted messages match the pattern:
-
-    * {:created, %Outage{}}
-    * {:updated, %Outage{}}
-    * {:deleted, %Outage{}}
-
-  """
-  def subscribe_outages(%Scope{} = scope) do
-    key = scope.user.id
-
-    Phoenix.PubSub.subscribe(Beacon.PubSub, "user:#{key}:outages")
-  end
-
-  defp broadcast_outage(%Scope{} = scope, message) do
-    key = scope.user.id
-
-    Phoenix.PubSub.broadcast(Beacon.PubSub, "user:#{key}:outages", message)
-  end
 
   @doc """
   Returns the list of outages.
 
   ## Examples
 
-      iex> list_outages(scope)
+      iex> list_outages()
       [%Outage{}, ...]
 
   """
-  def list_outages() do
+  def list_outages do
     Repo.all(Outage)
   end
 
@@ -51,41 +28,33 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> get_outage!(scope, 123)
+      iex> get_outage!(123)
       %Outage{}
 
-      iex> get_outage!(scope, 456)
+      iex> get_outage!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_outage!(id) do
-    Repo.get!(Outage, id)
-  end
+  def get_outage!(id), do: Repo.get!(Outage, id)
 
-  @spec create_outage(
-          %Beacon.Accounts.Scope{optional(any()) => any()},
-          :invalid | %{optional(:__struct__) => none(), optional(atom() | binary()) => any()}
-        ) :: any()
   @doc """
   Creates a outage.
 
   ## Examples
 
-      iex> create_outage(scope, %{field: value})
+      iex> create_outage(%{field: value})
       {:ok, %Outage{}}
 
-      iex> create_outage(scope, %{field: bad_value})
+      iex> create_outage(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_outage(%Scope{} = scope, attrs) do
-    with {:ok, outage = %Outage{}} <-
-           %Outage{}
-           |> Outage.create_changeset(attrs, scope)
-           |> Repo.insert() do
-      broadcast_outage(scope, {:created, outage})
-      {:ok, outage}
-    end
+  def create_outage(%Profile{} = profile, attrs) do
+    %Outage{}
+    |> Outage.create_changeset(attrs)
+    |> Ecto.Changeset.put_change(:created_by_id, profile.id)
+    |> Ecto.Changeset.put_change(:updated_by_id, profile.id)
+    |> Repo.insert()
   end
 
   @doc """
@@ -93,23 +62,18 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> update_outage(scope, outage, %{field: new_value})
+      iex> update_outage(outage, %{field: new_value})
       {:ok, %Outage{}}
 
-      iex> update_outage(scope, outage, %{field: bad_value})
+      iex> update_outage(outage, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_outage(%Scope{} = scope, %Outage{} = outage, attrs) do
-    # true = outage.user_id == scope.user.id
-
-    with {:ok, outage = %Outage{}} <-
-           outage
-           |> Outage.update_changeset(attrs, scope)
-           |> Repo.update() do
-      broadcast_outage(scope, {:updated, outage})
-      {:ok, outage}
-    end
+  def update_outage(%Profile{} = actor, %Outage{} = outage, attrs) do
+    outage
+    |> Outage.update_changeset(attrs)
+    |> Ecto.Changeset.put_change(:updated_by_id, actor.id)
+    |> Repo.update()
   end
 
   @doc """
@@ -117,21 +81,15 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> delete_outage(scope, outage)
+      iex> delete_outage(outage)
       {:ok, %Outage{}}
 
-      iex> delete_outage(scope, outage)
+      iex> delete_outage(outage)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_outage(%Scope{} = scope, %Outage{} = outage) do
-    # true = outage.user_id == scope.user.id
-
-    with {:ok, outage = %Outage{}} <-
-           Repo.delete(outage) do
-      broadcast_outage(scope, {:deleted, outage})
-      {:ok, outage}
-    end
+  def delete_outage(%Outage{} = outage) do
+    Repo.delete(outage)
   end
 
   @doc """
@@ -139,13 +97,11 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> change_outage(scope, outage)
+      iex> change_outage(outage)
       %Ecto.Changeset{data: %Outage{}}
 
   """
-  def change_outage(%Scope{} = scope, %Outage{} = outage, attrs \\ %{}) do
-    # true = outage.user_id == scope.user.id
-
-    Outage.update_changeset(outage, attrs, scope)
+  def change_outage(%Outage{} = outage, attrs \\ %{}) do
+    Outage.update_changeset(outage, attrs)
   end
 end

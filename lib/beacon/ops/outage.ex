@@ -1,22 +1,25 @@
 defmodule Beacon.Ops.Outage do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.Ops.Outage
 
   @schema_prefix "ops"
 
   schema "outages" do
+    field :public_id, Ecto.UUID
 
-    field :public_id, Ecto.UUID, autogenerate: true
     field :outage_type, Ecto.Enum,
       values: [:unscheduled, :scheduled, :emergency]
+
     field :status, Ecto.Enum,
       values: [:unverified, :verified, :being_resolved, :resolved]
+
     field :confidence_percentage, :float
     field :title, :string
     field :description, :string
+
     field :number_of_reports, :integer
     field :estimated_affected_population, :integer
+
     field :start_time, :utc_datetime
     field :estimated_restoration_time, :utc_datetime
     field :actual_restoration_time, :utc_datetime
@@ -30,7 +33,7 @@ defmodule Beacon.Ops.Outage do
     timestamps()
   end
 
-  def create_changeset(%Outage{} = outage, attrs, scope) do
+  def create_changeset(outage, attrs) do
     outage
     |> cast(attrs, [
       :outage_type,
@@ -40,11 +43,9 @@ defmodule Beacon.Ops.Outage do
       :start_time
     ])
     |> validate_required([:outage_type, :provider_id])
-    |> put_change(:created_by_id, scope.profile.id)
-    |> put_change(:updated_by_id, scope.profile.id)
   end
 
-  def update_changeset(outage, attrs, scope) do
+  def update_changeset(outage, attrs) do
     outage
     |> cast(attrs, [
       :status,
@@ -53,6 +54,5 @@ defmodule Beacon.Ops.Outage do
       :estimated_restoration_time,
       :actual_restoration_time
     ])
-    |> put_change(:updated_by_id, scope.profile.id)
   end
 end

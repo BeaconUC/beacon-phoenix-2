@@ -7,13 +7,14 @@ defmodule Beacon.OpsFixtures do
   @doc """
   Generate a outage.
   """
-  def outage_fixture(scope, attrs \\ %{}) do
-    attrs =
-      Enum.into(attrs, %{
+  def outage_fixture(attrs \\ %{}) do
+    {:ok, outage} =
+      attrs
+      |> Enum.into(%{
 
       })
+      |> Beacon.Ops.create_outage()
 
-    {:ok, outage} = Beacon.Ops.create_outage(scope, attrs)
     outage
   end
 end

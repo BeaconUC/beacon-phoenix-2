@@ -6,84 +6,52 @@ defmodule Beacon.OpsTest do
   describe "outages" do
     alias Beacon.Ops.Outage
 
-    import Beacon.AccountsFixtures, only: [user_scope_fixture: 0]
     import Beacon.OpsFixtures
 
     @invalid_attrs %{}
 
-    test "list_outages/1 returns all scoped outages" do
-      scope = user_scope_fixture()
-      other_scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-      other_outage = outage_fixture(other_scope)
-      assert Ops.list_outages(scope) == [outage]
-      assert Ops.list_outages(other_scope) == [other_outage]
+    test "list_outages/0 returns all outages" do
+      outage = outage_fixture()
+      assert Ops.list_outages() == [outage]
     end
 
-    test "get_outage!/2 returns the outage with given id" do
-      scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-      other_scope = user_scope_fixture()
-      assert Ops.get_outage!(scope, outage.id) == outage
-      assert_raise Ecto.NoResultsError, fn -> Ops.get_outage!(other_scope, outage.id) end
+    test "get_outage!/1 returns the outage with given id" do
+      outage = outage_fixture()
+      assert Ops.get_outage!(outage.id) == outage
     end
 
-    test "create_outage/2 with valid data creates a outage" do
+    test "create_outage/1 with valid data creates a outage" do
       valid_attrs = %{}
-      scope = user_scope_fixture()
 
-      assert {:ok, %Outage{} = outage} = Ops.create_outage(scope, valid_attrs)
-      assert outage.user_id == scope.user.id
+      assert {:ok, %Outage{} = outage} = Ops.create_outage(valid_attrs)
     end
 
-    test "create_outage/2 with invalid data returns error changeset" do
-      scope = user_scope_fixture()
-      assert {:error, %Ecto.Changeset{}} = Ops.create_outage(scope, @invalid_attrs)
+    test "create_outage/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Ops.create_outage(@invalid_attrs)
     end
 
-    test "update_outage/3 with valid data updates the outage" do
-      scope = user_scope_fixture()
-      outage = outage_fixture(scope)
+    test "update_outage/2 with valid data updates the outage" do
+      outage = outage_fixture()
       update_attrs = %{}
 
-      assert {:ok, %Outage{} = outage} = Ops.update_outage(scope, outage, update_attrs)
+      assert {:ok, %Outage{} = outage} = Ops.update_outage(outage, update_attrs)
     end
 
-    test "update_outage/3 with invalid scope raises" do
-      scope = user_scope_fixture()
-      other_scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-
-      assert_raise MatchError, fn ->
-        Ops.update_outage(other_scope, outage, %{})
-      end
+    test "update_outage/2 with invalid data returns error changeset" do
+      outage = outage_fixture()
+      assert {:error, %Ecto.Changeset{}} = Ops.update_outage(outage, @invalid_attrs)
+      assert outage == Ops.get_outage!(outage.id)
     end
 
-    test "update_outage/3 with invalid data returns error changeset" do
-      scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Ops.update_outage(scope, outage, @invalid_attrs)
-      assert outage == Ops.get_outage!(scope, outage.id)
+    test "delete_outage/1 deletes the outage" do
+      outage = outage_fixture()
+      assert {:ok, %Outage{}} = Ops.delete_outage(outage)
+      assert_raise Ecto.NoResultsError, fn -> Ops.get_outage!(outage.id) end
     end
 
-    test "delete_outage/2 deletes the outage" do
-      scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-      assert {:ok, %Outage{}} = Ops.delete_outage(scope, outage)
-      assert_raise Ecto.NoResultsError, fn -> Ops.get_outage!(scope, outage.id) end
-    end
-
-    test "delete_outage/2 with invalid scope raises" do
-      scope = user_scope_fixture()
-      other_scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-      assert_raise MatchError, fn -> Ops.delete_outage(other_scope, outage) end
-    end
-
-    test "change_outage/2 returns a outage changeset" do
-      scope = user_scope_fixture()
-      outage = outage_fixture(scope)
-      assert %Ecto.Changeset{} = Ops.change_outage(scope, outage)
+    test "change_outage/1 returns a outage changeset" do
+      outage = outage_fixture()
+      assert %Ecto.Changeset{} = Ops.change_outage(outage)
     end
   end
 end
