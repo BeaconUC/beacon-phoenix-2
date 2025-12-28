@@ -3,7 +3,7 @@ defmodule Beacon.Schema do
     quote do
       use Ecto.Schema
 
-      @primary_key {:id, :id, autogenerate: true}
+      @primary_key {:id, :id, autogenerate: false, read_after_writes: true}
       @foreign_key_type :id
 
       @timestamps_opts inserted_at: :created_at, type: :utc_datetime
