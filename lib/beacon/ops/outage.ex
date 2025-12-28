@@ -27,10 +27,10 @@ defmodule Beacon.Ops.Outage do
 
     belongs_to :provider, Beacon.Geo.Provider
 
-    belongs_to :confirmed_by, Beacon.Iam.Profile
-    belongs_to :resolved_by, Beacon.Iam.Profile
-    belongs_to :created_by, Beacon.Iam.Profile
-    belongs_to :updated_by, Beacon.Iam.Profile
+    belongs_to :confirmed_by_profile, Beacon.Iam.Profile, foreign_key: :confirmed_by
+    belongs_to :resolved_by_profile, Beacon.Iam.Profile, foreign_key: :resolved_by
+    belongs_to :created_by_profile, Beacon.Iam.Profile, foreign_key: :created_by
+    belongs_to :updated_by_profile, Beacon.Iam.Profile, foreign_key: :updated_by
 
     has_many :affected_areas, Beacon.Ops.AffectedArea
     has_many :barangays, through: [:affected_areas, :barangay]

@@ -14,8 +14,8 @@ defmodule Beacon.Iam.ApiKey do
     field :rate_limit_per_minute, :integer
     field :expires_at, :utc_datetime
 
-    belongs_to :created_by, Beacon.Iam.Profile
-    belongs_to :updated_by, Beacon.Iam.Profile
+    belongs_to :created_by_profile, Beacon.Iam.Profile, foreign_key: :created_by
+    belongs_to :updated_by_profile, Beacon.Iam.Profile, foreign_key: :updated_by
 
     timestamps()
   end

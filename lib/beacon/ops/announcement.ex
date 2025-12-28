@@ -14,8 +14,8 @@ defmodule Beacon.Ops.Announcement do
     field :valid_from, :utc_datetime
     field :valid_until, :utc_datetime
 
-    belongs_to :created_by, Beacon.Iam.Profile
-    belongs_to :updated_by, Beacon.Iam.Profile
+    belongs_to :created_by_profile, Beacon.Iam.Profile, foreign_key: :created_by
+    belongs_to :updated_by_profile, Beacon.Iam.Profile, foreign_key: :updated_by
 
     has_many :announcement_scopes, Beacon.Ops.AnnouncementScope
 

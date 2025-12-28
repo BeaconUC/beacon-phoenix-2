@@ -16,8 +16,8 @@ defmodule Beacon.Ops.OutageUpdate do
     field :description, :string
 
     belongs_to :outage, Beacon.Ops.Outage
-    belongs_to :created_by, Beacon.Iam.Profile
-    belongs_to :updated_by, Beacon.Iam.Profile
+    belongs_to :created_by_profile, Beacon.Iam.Profile, foreign_key: :created_by
+    belongs_to :updated_by_profile, Beacon.Iam.Profile, foreign_key: :updated_by
 
     timestamps()
   end
