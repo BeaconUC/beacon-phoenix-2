@@ -14,7 +14,7 @@ defmodule Beacon.Geo.Province do
 
     belongs_to :region, Beacon.Geo.Region
 
-    has_many :cities, Beacon.Geo.City
+    # has_many :cities, Beacon.Geo.City
 
     timestamps()
   end

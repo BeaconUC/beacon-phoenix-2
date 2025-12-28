@@ -9,10 +9,10 @@ defmodule Beacon.Ops.Crew do
     field :name, :string
     field :description, :string
 
-    has_many :crew_members, Beacon.Ops.CrewMember
-    has_many :profiles, through: [:crew_members, :profile]
+    # has_many :crew_members, Beacon.Ops.CrewMember
+    # has_many :profiles, through: [:crew_members, :profile]
 
-    has_many :assignments, Beacon.Ops.Assignment
+    # has_many :assignments, Beacon.Ops.Assignment
 
     timestamps()
   end

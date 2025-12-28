@@ -15,9 +15,9 @@ defmodule Beacon.Iam.Profile do
 
     belongs_to :user, Beacon.Accounts.User
 
-    has_one :profile_settings, Beacon.Iam.ProfileSettings
-    has_many :created_api_keys, Beacon.Iam.ApiKey, foreign_key: :created_by_id
-    has_many :updated_api_keys, Beacon.Iam.ApiKey, foreign_key: :updated_by_id
+    # has_one :profile_settings, Beacon.Iam.ProfileSetting
+    # has_many :created_api_keys, Beacon.Iam.ApiKey, foreign_key: :created_by
+    # has_many :updated_api_keys, Beacon.Iam.ApiKey, foreign_key: :updated_by
 
     timestamps()
   end

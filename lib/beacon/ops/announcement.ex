@@ -17,7 +17,7 @@ defmodule Beacon.Ops.Announcement do
     belongs_to :created_by_profile, Beacon.Iam.Profile, foreign_key: :created_by
     belongs_to :updated_by_profile, Beacon.Iam.Profile, foreign_key: :updated_by
 
-    has_many :announcement_scopes, Beacon.Ops.AnnouncementScope
+    # has_many :announcement_scopes, Beacon.Ops.AnnouncementScope
 
     timestamps()
   end

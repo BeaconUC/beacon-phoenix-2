@@ -16,8 +16,8 @@ defmodule Beacon.Geo.Barangay do
     field :cluster_id, :integer
 
     belongs_to :city, Beacon.Geo.City
-    has_many :barangay_feeders, Beacon.Geo.BarangayFeeder
-    has_many :feeders, through: [:barangay_feeders, :feeder]
+    # has_many :barangay_feeders, Beacon.Geo.BarangayFeeder
+    # has_many :feeders, through: [:barangay_feeders, :feeder]
 
     timestamps()
   end

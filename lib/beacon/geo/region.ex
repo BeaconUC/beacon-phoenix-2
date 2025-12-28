@@ -13,7 +13,7 @@ defmodule Beacon.Geo.Region do
 
     field :boundary, Geo.PostGIS.Geometry
 
-    has_many :provinces, Beacon.Geo.Province
+    # has_many :provinces, Beacon.Geo.Province
 
     timestamps()
   end

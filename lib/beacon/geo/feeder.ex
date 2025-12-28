@@ -11,8 +11,8 @@ defmodule Beacon.Geo.Feeder do
 
     belongs_to :provider, Beacon.Geo.Provider
 
-    has_many :barangay_feeders, Beacon.Geo.BarangayFeeder
-    has_many :barangays, through: [:barangay_feeders, :barangay]
+    # has_many :barangay_feeders, Beacon.Geo.BarangayFeeder
+    # has_many :barangays, through: [:barangay_feeders, :barangay]
 
     timestamps()
   end

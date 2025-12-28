@@ -9,7 +9,7 @@ defmodule Beacon.Geo.Provider do
     field :name, :string
     field :acronym, :string
 
-    has_many :feeders, Beacon.Geo.Feeder
+    # has_many :feeders, Beacon.Geo.Feeder
 
     timestamps()
   end

@@ -15,7 +15,7 @@ defmodule Beacon.Geo.City do
 
     belongs_to :province, Beacon.Geo.Province
 
-    has_many :barangays, Beacon.Geo.Barangay
+    # has_many :barangays, Beacon.Geo.Barangay
 
     timestamps()
   end
