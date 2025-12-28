@@ -24,6 +24,9 @@ config :beacon,
   ecto_repos: [Beacon.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :postgrex, Postgrex.Types,
+  extensions: [{Geo.PostGIS.Extension, []}]
+
 # Configure the endpoint
 config :beacon, BeaconWeb.Endpoint,
   url: [host: "localhost"],

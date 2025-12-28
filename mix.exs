@@ -40,6 +40,8 @@ defmodule Beacon.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:geo, "~> 4.1"},
+      {:geo_postgis, "~> 3.7.1"},
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix, "~> 1.8.3"},
       {:phoenix_ecto, "~> 4.5"},
