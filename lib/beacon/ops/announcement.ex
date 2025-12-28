@@ -1,6 +1,7 @@
 defmodule Beacon.Ops.Announcement do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "ops"
 
@@ -38,8 +39,8 @@ defmodule Beacon.Ops.Announcement do
     announcement
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_length(:title, min: 6)
-    |> validate_length(:description, min: 11)
+    |> validate_length(:title, min: 6, max: Constant.varchar_max_length())
+    |> validate_length(:description, min: 11, max: Constant.text_max_length())
     |> validate_validity_range()
     |> foreign_key_constraint(:created_by_id)
     |> foreign_key_constraint(:updated_by_id)

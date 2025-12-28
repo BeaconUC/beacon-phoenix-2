@@ -1,6 +1,7 @@
 defmodule Beacon.Stats.PsaPriceIndex do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "stats"
 
@@ -31,7 +32,7 @@ defmodule Beacon.Stats.PsaPriceIndex do
     struct
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_number(:year, greater_than_or_equal_to: 2020)
+    |> validate_number(:year, greater_than_or_equal_to: Constant.psa_min_year())
     |> validate_inclusion(:month, 1..12)
     |> validate_number(:cpi_all_items, greater_than_or_equal_to: 0.0)
     |> validate_number(:purchasing_power_of_peso, greater_than_or_equal_to: 0.0)

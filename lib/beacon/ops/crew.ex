@@ -1,6 +1,7 @@
 defmodule Beacon.Ops.Crew do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "ops"
 
@@ -28,7 +29,8 @@ defmodule Beacon.Ops.Crew do
     crew
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_length(:name, max: 255)
+    |> validate_length(:name, max: Constant.varchar_max_length())
+    |> validate_length(:description, max: Constant.text_max_length())
     |> unique_constraint(:public_id, name: :crews_public_id_idx)
   end
 end

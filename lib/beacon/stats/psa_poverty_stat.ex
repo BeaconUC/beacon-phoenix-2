@@ -1,6 +1,7 @@
 defmodule Beacon.Stats.PsaPovertyStat do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "stats"
 
@@ -39,7 +40,7 @@ defmodule Beacon.Stats.PsaPovertyStat do
     psa_poverty_stat
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_number(:year, greater_than_or_equal_to: 2020)
+    |> validate_number(:year, greater_than_or_equal_to: Constant.psa_min_year())
     |> validate_number(:poverty_threshold_per_capita, greater_than_or_equal_to: 0)
     |> validate_number(:food_threshold_per_capita, greater_than_or_equal_to: 0)
     |> validate_number(:poverty_incidence_families, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)

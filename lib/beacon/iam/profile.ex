@@ -1,6 +1,7 @@
 defmodule Beacon.Iam.Profile do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.{ Constant, Enum }
 
   @schema_prefix "iam"
 
@@ -10,7 +11,7 @@ defmodule Beacon.Iam.Profile do
     field :first_name, :string
     field :last_name, :string
 
-    field :role, Ecto.Enum, values: [:user, :admin]
+    field :role, Ecto.Enum, values: Enum.roles_values()
     field :phone_number, :string
 
     belongs_to :user, Beacon.Accounts.User
@@ -37,7 +38,10 @@ defmodule Beacon.Iam.Profile do
     profile
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> validate_length(:phone_number, max: 20)
     |> validate_names_if_present()
+    |> validate_length(:first_name, max: Constant.varchar_max_length())
+    |> validate_length(:last_name, max: Constant.varchar_max_length())
     |> foreign_key_constraint(:user_id)
     |> unique_constraint(:user_id, name: :profiles_user_id_uk)
     |> unique_constraint(:public_id, name: :profiles_public_id_idx)

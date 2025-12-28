@@ -1,6 +1,7 @@
 defmodule Beacon.Geo.Barangay do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "geo"
 
@@ -38,7 +39,8 @@ defmodule Beacon.Geo.Barangay do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_number(:population, greater_than_or_equal_to: 0)
-    |> validate_number(:population_year, greater_than_or_equal_to: 2020)
+    |> validate_number(:population_year, greater_than_or_equal_to: Constant.psa_min_year())
+    |> validate_length(:name, max: Constant.varchar_max_length())
     |> foreign_key_constraint(:city_id)
     |> unique_constraint(:public_id, name: :barangays_public_id_idx)
     |> unique_constraint([:city_id, :name], name: :barangays_city_id_name_idx)

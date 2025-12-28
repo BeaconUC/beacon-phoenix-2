@@ -1,6 +1,7 @@
 defmodule Beacon.Ops.Outage do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.{ Constant, Enum }
 
   @schema_prefix "ops"
 
@@ -8,10 +9,10 @@ defmodule Beacon.Ops.Outage do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
 
     field :outage_type, Ecto.Enum,
-      values: [:unscheduled, :scheduled, :emergency]
+      values: Enum.outage_type_values()
 
     field :status, Ecto.Enum,
-      values: [:unverified, :reported, :confirmed, :in_progress, :resolved, :cancelled]
+      values: Enum.outage_status_values()
 
     field :confidence_percentage, :float
 
@@ -66,9 +67,11 @@ defmodule Beacon.Ops.Outage do
     outage
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_inclusion(:confidence_percentage, 0..100)
+    |> validate_number(:confidence_percentage, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)
     |> validate_number(:number_of_reports, greater_than_or_equal_to: 0)
     |> validate_number(:estimated_affected_population, greater_than_or_equal_to: 0)
+    |> validate_length(:title, max: Constant.varchar_max_length())
+    |> validate_length(:description, max: Constant.text_max_length())
     |> validate_restoration_timelines()
     |> foreign_key_constraint(:provider_id)
     |> foreign_key_constraint(:created_by_id)

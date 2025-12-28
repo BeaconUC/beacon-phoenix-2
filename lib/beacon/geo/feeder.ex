@@ -28,6 +28,7 @@ defmodule Beacon.Geo.Feeder do
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
     |> foreign_key_constraint(:provider_id)
+    |> validate_length(:feeder_number, max: 20)
     |> unique_constraint(:public_id, name: :feeders_public_id_idx)
     |> unique_constraint(
       [:provider_id, :feeder_number],

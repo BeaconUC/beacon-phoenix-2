@@ -1,6 +1,7 @@
 defmodule Beacon.Stats.PsaIncomeExpenditure do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "stats"
 
@@ -32,7 +33,7 @@ defmodule Beacon.Stats.PsaIncomeExpenditure do
     psa_income_expenditure
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_number(:year, greater_than_or_equal_to: 2020)
+    |> validate_number(:year, greater_than_or_equal_to: Constant.psa_min_year())
     |> validate_number(:avg_family_income, greater_than_or_equal_to: 0)
     |> validate_number(:avg_family_expenditure, greater_than_or_equal_to: 0)
     |> validate_number(:gini_coefficient, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 1.0)

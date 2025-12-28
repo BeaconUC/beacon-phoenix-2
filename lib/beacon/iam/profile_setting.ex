@@ -1,9 +1,10 @@
 defmodule Beacon.Iam.ProfileSetting do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Enum
 
   schema "profile_settings" do
-    field :theme, Ecto.Enum, values: [:system, :light, :dark]
+    field :theme, Ecto.Enum, values: Enum.themes_values()
     field :dynamic_color, :boolean
     field :font_scale, :decimal
     field :reduce_motion, :boolean
@@ -28,7 +29,7 @@ defmodule Beacon.Iam.ProfileSetting do
     profile_setting
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
-    |> validate_inclusion(:font_scale,
+    |> validate_number(:font_scale,
       greater_than_or_equal_to: 0.75,
       less_than_or_equal_to: 1.50
     )

@@ -1,14 +1,14 @@
 defmodule Beacon.Ops.Assignment do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.{ Constant, Enum }
 
   @schema_prefix "ops"
 
   schema "assignments" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
 
-    field :status, Ecto.Enum,
-      values: [:assigned, :in_progress, :completed, :terminated]
+    field :status, Ecto.Enum, values: Enum.assignment_status_values()
 
     field :notes, :string
     field :terminated_at, :utc_datetime
@@ -39,6 +39,7 @@ defmodule Beacon.Ops.Assignment do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_termination_timeline()
+    |> validate_length(:notes, max: Constant.text_max_length())
     |> foreign_key_constraint(:outage_id)
     |> foreign_key_constraint(:crew_id)
     |> foreign_key_constraint(:created_by_id)

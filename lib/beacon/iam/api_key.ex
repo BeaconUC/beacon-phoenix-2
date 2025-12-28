@@ -1,6 +1,7 @@
 defmodule Beacon.Iam.ApiKey do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   schema "api_keys" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
@@ -39,6 +40,8 @@ defmodule Beacon.Iam.ApiKey do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_number(:rate_limit_per_minute, greater_than: 0)
+    |> validate_length(:name, max: Constant.varchar_max_length())
+    |> validate_length(:service_name, max: Constant.varchar_max_length())
     |> validate_expires_at()
     |> foreign_key_constraint(:created_by_id)
     |> foreign_key_constraint(:updated_by_id)

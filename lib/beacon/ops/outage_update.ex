@@ -1,6 +1,7 @@
 defmodule Beacon.Ops.OutageUpdate do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.{ Constant, Enum }
 
   @schema_prefix "ops"
 
@@ -8,10 +9,10 @@ defmodule Beacon.Ops.OutageUpdate do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
 
     field :old_status, Ecto.Enum,
-      values: [:reported, :confirmed, :in_progress, :resolved, :cancelled]
+      values: Enum.outage_status_values()
 
     field :new_status, Ecto.Enum,
-      values: [:reported, :confirmed, :in_progress, :resolved, :cancelled]
+      values: Enum.outage_status_values()
 
     field :description, :string
 
@@ -38,6 +39,7 @@ defmodule Beacon.Ops.OutageUpdate do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     # |> validate_status_change()
+    |> validate_length(:description, max: Constant.text_max_length())
     |> foreign_key_constraint(:outage_id)
     |> foreign_key_constraint(:created_by_id)
     |> foreign_key_constraint(:updated_by_id)

@@ -1,6 +1,7 @@
 defmodule Beacon.Geo.Provider do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "geo"
 
@@ -23,6 +24,8 @@ defmodule Beacon.Geo.Provider do
     provider
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> validate_length(:name, max: Constant.varchar_max_length())
+    |> validate_length(:acronym, max: 20)
     |> unique_constraint(:name, name: :providers_name_idx)
     |> unique_constraint(:public_id, name: :providers_public_id_idx)
   end

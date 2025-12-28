@@ -1,6 +1,7 @@
 defmodule Beacon.Geo.Region do
   use Beacon.Schema
   import Ecto.Changeset
+  alias Beacon.Constant
 
   @schema_prefix "geo"
 
@@ -29,6 +30,9 @@ defmodule Beacon.Geo.Region do
     region
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> validate_length(:name, max: Constant.varchar_max_length())
+    |> validate_length(:acronym, max: 20)
+    |> validate_length(:rom_code, max: 20)
     |> unique_constraint(:name, name: :regions_name_idx)
     |> unique_constraint(:acronym, name: :regions_acronym_idx)
     |> unique_constraint(:rom_code, name: :regions_rom_code_idx)
