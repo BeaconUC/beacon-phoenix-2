@@ -2,13 +2,15 @@ import Config
 
 # Configure your database
 config :beacon, Beacon.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "beacon_dev",
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  hostname: System.get_env("DATABASE_HOST"),
+  database: System.get_env("DATABASE_NAME"),
+  port: String.to_integer(System.get_env("DATABASE_PORT")),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 10,
+  types: Beacon.PostgresTypes
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -20,7 +22,7 @@ config :beacon, BeaconWeb.Endpoint,
   # Bind to 0.0.0.0 to expose the server to the docker host machine.
   # This makes make the service accessible from any network interface.
   # Change to `ip: {127, 0, 0, 1}` to allow access only from the server machine.
-  http: [ip: {0, 0, 0, 0}],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -28,7 +30,8 @@ config :beacon, BeaconWeb.Endpoint,
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:beacon, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:beacon, ~w(--watch)]}
-  ]
+  ],
+  pubsub_server: Beacon.PubSub
 
 # ## SSL Support
 #
