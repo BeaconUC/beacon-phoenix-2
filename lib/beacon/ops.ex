@@ -50,7 +50,7 @@ defmodule Beacon.Ops do
       [%Outage{}, ...]
 
   """
-  def list_outages do
+  def list_outages(%Scope{} = _scope) do
     query = from o in Outage, order_by: [desc: o.updated_at], limit: 100
     Repo.all(query)
   end
@@ -66,7 +66,7 @@ defmodule Beacon.Ops do
       %Outage{}
 
   """
-  def get_outage!(id) do
+  def get_outage!(%Scope{} = _scope, id) do
     Repo.get!(Outage, id)
   end
 
@@ -169,18 +169,18 @@ defmodule Beacon.Ops do
       %Todo{...}
 
   """
-  def change_outage(%Outage{} = outage, attrs \\ %{}) do
+  def change_outage(%Scope{} = _scope, %Outage{} = outage, attrs \\ %{}) do
     Outage.changeset(outage, attrs)
   end
 
   @doc """
   Subscribes to scoped notifications about any outage_report changes.
   """
-  def subscribe_outage_report do
+  def subscribe_outage_reports(%Scope{} = _scope) do
     Phoenix.PubSub.subscribe(Beacon.PubSub, @outage_report_topic)
   end
 
-  def subscribe_outage_report(id) do
+  def subscribe_outage_reports(%Scope{} = _scope, id) do
     Phoenix.PubSub.subscribe(Beacon.PubSub, "#{@outage_report_topic}:#{id}")
   end
 
@@ -193,7 +193,7 @@ defmodule Beacon.Ops do
       [%OutageReport{}, ...]
 
   """
-  def list_outage_reports do
+  def list_outage_reports(%Scope{} = _scope) do
     query = from o in OutageReport, order_by: [desc: o.updated_at], limit: 100
     Repo.all(query)
   end
@@ -209,7 +209,7 @@ defmodule Beacon.Ops do
       %OutageReport{}
 
   """
-  def get_outage_report!(id) do
+  def get_outage_report!(%Scope{} = _scope, id) do
     Repo.get!(OutageReport, id)
   end
 
@@ -251,7 +251,7 @@ defmodule Beacon.Ops do
   """
   def update_outage_report(%Scope{} = scope, %OutageReport{} = outage_report, attrs) do
     is_admin = scope.role == :admin
-    is_owner = scope.user && outage_report.reported_by == scope.user.profile.id
+    is_owner = scope.user && outage_report.reported_by == scope.profile.id
 
     if is_admin or is_owner do
       outage_report
@@ -277,7 +277,7 @@ defmodule Beacon.Ops do
   """
   def delete_outage_report(%Scope{} = scope, %OutageReport{} = outage_report) do
     is_admin = scope.role == :admin
-    is_owner = scope.user && outage_report.reported_by == scope.user.profile.id
+    is_owner = scope.user && outage_report.reported_by == scope.profile.id
 
     if is_admin or is_owner do
       Repo.delete(outage_report)
@@ -296,7 +296,7 @@ defmodule Beacon.Ops do
       %Todo{...}
 
   """
-  def change_outage_report(%OutageReport{} = outage_report, attrs \\ %{}) do
+  def change_outage_report(%Scope{} = _scope, %OutageReport{} = outage_report, attrs \\ %{}) do
     OutageReport.changeset(outage_report, attrs)
   end
 

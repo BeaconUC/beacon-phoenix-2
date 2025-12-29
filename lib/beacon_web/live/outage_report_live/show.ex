@@ -6,7 +6,7 @@ defmodule BeaconWeb.OutageReportLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
         Outage report {@outage_report.id}
         <:subtitle>Location: {@outage_report.location}</:subtitle>
@@ -30,12 +30,14 @@ defmodule BeaconWeb.OutageReportLive.Show do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    if connected?(socket), do: Ops.subscribe_outage_report(id)
+    if connected?(socket) do
+      Ops.subscribe_outage_reports(socket.assigns.current_scope, id)
+    end
 
     {:ok,
      socket
      |> assign(:page_title, "Show Outage report")
-     |> assign(:outage_report, Ops.get_outage_report!(id))}
+     |> assign(:outage_report, Ops.get_outage_report!(socket.assigns.current_scope, id))}
   end
 
   @impl true

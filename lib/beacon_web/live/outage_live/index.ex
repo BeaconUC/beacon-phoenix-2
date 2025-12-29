@@ -6,7 +6,7 @@ defmodule BeaconWeb.OutageLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
         Listing Outages
         <:actions>
@@ -51,17 +51,19 @@ defmodule BeaconWeb.OutageLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: Ops.subscribe_outage()
+    if connected?(socket) do
+      Ops.subscribe_outage(socket.assigns.current_scope)
+    end
 
     {:ok,
      socket
      |> assign(:page_title, "Listing Outages")
-     |> stream(:outages, list_outages())}
+     |> stream(:outages, list_outages(socket.assigns.current_scope))}
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    outage = Ops.get_outage!(id)
+    outage = Ops.get_outage!(socket.assigns.current_scope, id)
 
     case Ops.delete_outage(socket.assigns.current_scope, outage) do
       {:ok, _outage} ->
@@ -76,8 +78,8 @@ defmodule BeaconWeb.OutageLive.Index do
     end
   end
 
-  defp list_outages() do
-    Ops.list_outages()
+  defp list_outages(current_scope) do
+    Ops.list_outages(current_scope)
   end
 
   def handle_info({:outage_deleted, msg}, socket) do

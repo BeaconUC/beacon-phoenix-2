@@ -7,7 +7,7 @@ defmodule BeaconWeb.OutageLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
         {@page_title}
         <:subtitle>Use this form to manage outage records in your database.</:subtitle>
@@ -35,7 +35,7 @@ defmodule BeaconWeb.OutageLive.Form do
         <.input field={@form[:actual_restoration_time]} type="datetime-local" label="Actual restoration time" />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Outage</.button>
-          <.button navigate={return_path(@return_to, @outage)}>Cancel</.button>
+          <.button navigate={return_path(@current_scope, @return_to, @outage)}>Cancel</.button>
         </footer>
       </.form>
     </Layouts.app>
@@ -54,12 +54,12 @@ defmodule BeaconWeb.OutageLive.Form do
   defp return_to(_), do: "index"
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    outage = Ops.get_outage!(id)
+    outage = Ops.get_outage!(socket.assigns.current_scope, id)
 
     socket
     |> assign(:page_title, "Edit Outage")
     |> assign(:outage, outage)
-    |> assign(:form, to_form(Ops.change_outage(outage)))
+    |> assign(:form, to_form(Ops.change_outage(socket.assigns.current_scope, outage)))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -68,12 +68,12 @@ defmodule BeaconWeb.OutageLive.Form do
     socket
     |> assign(:page_title, "New Outage")
     |> assign(:outage, outage)
-    |> assign(:form, to_form(Ops.change_outage(outage)))
+    |> assign(:form, to_form(Ops.change_outage(socket.assigns.current_scope, outage)))
   end
 
   @impl true
   def handle_event("validate", %{"outage" => outage_params}, socket) do
-    changeset = Ops.change_outage(socket.assigns.outage, outage_params)
+    changeset = Ops.change_outage(socket.assigns.current_scope, socket.assigns.outage, outage_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -87,7 +87,7 @@ defmodule BeaconWeb.OutageLive.Form do
         {:noreply,
          socket
          |> put_flash(:info, "Outage updated successfully")
-         |> push_navigate(to: return_path(socket.assigns.return_to, outage))}
+         |> push_navigate(to: return_path(socket.assigns.current_scope, socket.assigns.return_to, outage))}
 
       {:error, :unauthorized} ->
         {:noreply, put_flash(socket, :error, "You are not authorized to update this report.")}
@@ -103,7 +103,7 @@ defmodule BeaconWeb.OutageLive.Form do
         {:noreply,
          socket
          |> put_flash(:info, "Outage created successfully")
-         |> push_navigate(to: return_path(socket.assigns.return_to, outage))}
+         |> push_navigate(to: return_path(socket.assigns.current_scope, socket.assigns.return_to, outage))}
 
       {:error, :unauthorized} ->
         {:noreply, put_flash(socket, :error, "You are not authorized to create a report.")}
@@ -113,6 +113,6 @@ defmodule BeaconWeb.OutageLive.Form do
     end
   end
 
-  defp return_path("index", _outage), do: ~p"/outages"
-  defp return_path("show", outage), do: ~p"/outages/#{outage}"
+  defp return_path(_scope, "index", _outage), do: ~p"/outages"
+  defp return_path(_scope, "show", outage), do: ~p"/outages/#{outage}"
 end
