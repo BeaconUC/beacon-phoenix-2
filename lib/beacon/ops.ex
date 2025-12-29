@@ -7,55 +7,60 @@ defmodule Beacon.Ops do
   alias Beacon.Repo
 
   alias Beacon.Ops.Outage
-  alias Beacon.Iam.Profile
+  alias Beacon.Ops.OutageReport
+  alias Beacon.Ops.Announcement
+  alias Beacon.Ops.Assignment
+  alias Beacon.Accounts.Scope
+
+  @outage_report_topic "outage_reports"
+
+  @doc """
+  Subscribes to scoped notifications about any outage changes.
+  """
+  def subscribe_outage(%Scope{} = _scope) do
+    raise "TODO"
+  end
 
   @doc """
   Returns the list of outages.
 
   ## Examples
 
-      iex> list_outages()
+      iex> list_outages(scope)
       [%Outage{}, ...]
 
   """
-  def list_outages do
-    Repo.all(Outage)
+  def list_outages(%Scope{} = _scope) do
+    raise "TODO"
   end
 
   @doc """
   Gets a single outage.
 
-  Raises `Ecto.NoResultsError` if the Outage does not exist.
+  Raises if the Outage does not exist.
 
   ## Examples
 
-      iex> get_outage!(123)
+      iex> get_outage!(scope, 123)
       %Outage{}
 
-      iex> get_outage!(456)
-      ** (Ecto.NoResultsError)
-
   """
-  def get_outage!(id), do: Repo.get!(Outage, id)
+  def get_outage!(%Scope{} = _scope, id), do: raise "TODO"
 
   @doc """
   Creates a outage.
 
   ## Examples
 
-      iex> create_outage(%{field: value})
+      iex> create_outage(scope, %{field: value})
       {:ok, %Outage{}}
 
-      iex> create_outage(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> create_outage(scope, %{field: bad_value})
+      {:error, ...}
 
   """
-  def create_outage(%Profile{} = profile, attrs) do
-    %Outage{}
-    |> Outage.create_changeset(attrs)
-    |> Ecto.Changeset.put_change(:created_by, profile.id)
-    |> Ecto.Changeset.put_change(:updated_by, profile.id)
-    |> Repo.insert()
+  def create_outage(%Scope{} = _scope, attrs) do
+    raise "TODO"
   end
 
   @doc """
@@ -63,192 +68,116 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> update_outage(outage, %{field: new_value})
+      iex> update_outage(scope, outage, %{field: new_value})
       {:ok, %Outage{}}
 
-      iex> update_outage(outage, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> update_outage(scope, outage, %{field: bad_value})
+      {:error, ...}
 
   """
-  def update_outage(%Profile{} = profile, %Outage{} = outage, attrs) do
-    outage
-    |> Outage.update_changeset(attrs)
-    |> Ecto.Changeset.put_change(:updated_by, profile.id)
-    |> Repo.update()
+  def update_outage(%Scope{} = _scope, %Outage{} = outage, attrs) do
+    raise "TODO"
   end
 
   @doc """
-  Deletes a outage.
+  Deletes a Outage.
 
   ## Examples
 
-      iex> delete_outage(outage)
+      iex> delete_outage(scope, outage)
       {:ok, %Outage{}}
 
-      iex> delete_outage(outage)
-      {:error, %Ecto.Changeset{}}
+      iex> delete_outage(scope, outage)
+      {:error, ...}
 
   """
-  def delete_outage(%Outage{} = outage) do
-    Repo.delete(outage)
+  def delete_outage(%Scope{} = _scope, %Outage{} = outage) do
+    raise "TODO"
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking outage changes.
+  Returns a data structure for tracking outage changes.
 
   ## Examples
 
-      iex> change_outage(outage)
-      %Ecto.Changeset{data: %Outage{}}
+      iex> change_outage(scope, outage)
+      %Todo{...}
 
   """
-  def change_outage(%Outage{} = outage, attrs \\ %{}) do
-    Outage.update_changeset(outage, attrs)
-  end
-
-  alias Beacon.Ops.OutageUpdate
-
-  @doc """
-  Returns the list of outage_updates.
-
-  ## Examples
-
-      iex> list_outage_updates()
-      [%OutageUpdate{}, ...]
-
-  """
-  def list_outage_updates do
-    Repo.all(OutageUpdate)
+  def change_outage(%Scope{} = _scope, %Outage{} = outage, _attrs \\ %{}) do
+    raise "TODO"
   end
 
   @doc """
-  Gets a single outage_update.
-
-  Raises `Ecto.NoResultsError` if the Outage update does not exist.
-
-  ## Examples
-
-      iex> get_outage_update!(123)
-      %OutageUpdate{}
-
-      iex> get_outage_update!(456)
-      ** (Ecto.NoResultsError)
-
+  Subscribes to scoped notifications about any outage_report changes.
   """
-  def get_outage_update!(id), do: Repo.get!(OutageUpdate, id)
-
-  @doc """
-  Creates a outage_update.
-
-  ## Examples
-
-      iex> create_outage_update(%{field: value})
-      {:ok, %OutageUpdate{}}
-
-      iex> create_outage_update(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_outage_update(attrs) do
-    %OutageUpdate{}
-    |> OutageUpdate.changeset(attrs)
-    |> Repo.insert()
+  def subscribe_outage_report do
+    Phoenix.PubSub.subscribe(Beacon.PubSub, @outage_report_topic)
   end
 
-  @doc """
-  Updates a outage_update.
-
-  ## Examples
-
-      iex> update_outage_update(outage_update, %{field: new_value})
-      {:ok, %OutageUpdate{}}
-
-      iex> update_outage_update(outage_update, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_outage_update(%OutageUpdate{} = outage_update, attrs) do
-    outage_update
-    |> OutageUpdate.changeset(attrs)
-    |> Repo.update()
+  def subscribe_outage_report(id) do
+    Phoenix.PubSub.subscribe(Beacon.PubSub, "#{@outage_report_topic}:#{id}")
   end
 
-  @doc """
-  Deletes a outage_update.
+  defp broadcast({:ok, outage_report}, event) do
+    Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_report_topic, {event, outage_report})
+    Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_report_topic}:#{outage_report.id}", {event, outage_report})
 
-  ## Examples
-
-      iex> delete_outage_update(outage_update)
-      {:ok, %OutageUpdate{}}
-
-      iex> delete_outage_update(outage_update)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_outage_update(%OutageUpdate{} = outage_update) do
-    Repo.delete(outage_update)
+    {:ok, outage_report}
   end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking outage_update changes.
-
-  ## Examples
-
-      iex> change_outage_update(outage_update)
-      %Ecto.Changeset{data: %OutageUpdate{}}
-
-  """
-  def change_outage_update(%OutageUpdate{} = outage_update, attrs \\ %{}) do
-    OutageUpdate.changeset(outage_update, attrs)
-  end
-
-  alias Beacon.Ops.OutageReport
+  defp broadcast({:error, _} = error, _event), do: error
 
   @doc """
   Returns the list of outage_reports.
 
   ## Examples
 
-      iex> list_outage_reports()
+      iex> list_outage_reports(scope)
       [%OutageReport{}, ...]
 
   """
   def list_outage_reports do
-    Repo.all(OutageReport)
+    query = from o in OutageReport, order_by: [desc: o.updated_at], limit: 100
+    Repo.all(query)
   end
 
   @doc """
   Gets a single outage_report.
 
-  Raises `Ecto.NoResultsError` if the Outage report does not exist.
+  Raises if the Outage report does not exist.
 
   ## Examples
 
-      iex> get_outage_report!(123)
+      iex> get_outage_report!(scope, 123)
       %OutageReport{}
 
-      iex> get_outage_report!(456)
-      ** (Ecto.NoResultsError)
-
   """
-  def get_outage_report!(id), do: Repo.get!(OutageReport, id)
+  def get_outage_report!(id) do
+    Repo.get!(OutageReport, id)
+  end
 
   @doc """
   Creates a outage_report.
 
   ## Examples
 
-      iex> create_outage_report(%{field: value})
+      iex> create_outage_report(scope, %{field: value})
       {:ok, %OutageReport{}}
 
-      iex> create_outage_report(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> create_outage_report(scope, %{field: bad_value})
+      {:error, ...}
 
   """
-  def create_outage_report(attrs) do
+  def create_outage_report(%Scope{} = scope, attrs, location) do
+    attrs =
+      attrs
+      |> Map.put("reported_by", scope.profile.id)
+      |> Map.put("location", location)
+
     %OutageReport{}
     |> OutageReport.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(returning: true)
+    |> broadcast(:outage_report_created)
   end
 
   @doc """
@@ -256,383 +185,123 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> update_outage_report(outage_report, %{field: new_value})
+      iex> update_outage_report(scope, outage_report, %{field: new_value})
       {:ok, %OutageReport{}}
 
-      iex> update_outage_report(outage_report, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> update_outage_report(scope, outage_report, %{field: bad_value})
+      {:error, ...}
 
   """
-  def update_outage_report(%OutageReport{} = outage_report, attrs) do
-    outage_report
-    |> OutageReport.changeset(attrs)
-    |> Repo.update()
+  # def update_outage_report(%Scope{user: user}, %OutageReport{} = outage_report, attrs) do
+  #   cond do
+  #     outage_report.reported_by == user.id ->
+  #       outage_report
+  #       |> OutageReport.changeset(attrs)
+  #       |> Repo.update()
+
+  #     true ->
+  #       {:error, :unauthorized}
+  #   end
+  # end
+
+  def update_outage_report(%Scope{} = scope, %OutageReport{} = outage_report, attrs) do
+    is_admin = scope.role == :admin
+    is_owner = scope.user && outage_report.reported_by == scope.user.profile.id
+
+    if is_admin or is_owner do
+      outage_report
+      |> OutageReport.changeset(attrs)
+      |> Repo.update()
+      |> broadcast(:outage_report_updated)
+    else
+      {:error, :unauthorized}
+    end
   end
 
   @doc """
-  Deletes a outage_report.
+  Deletes a OutageReport.
 
   ## Examples
 
-      iex> delete_outage_report(outage_report)
+      iex> delete_outage_report(scope, outage_report)
       {:ok, %OutageReport{}}
 
-      iex> delete_outage_report(outage_report)
-      {:error, %Ecto.Changeset{}}
+      iex> delete_outage_report(scope, outage_report)
+      {:error, ...}
 
   """
-  def delete_outage_report(%OutageReport{} = outage_report) do
-    Repo.delete(outage_report)
+  def delete_outage_report(%Scope{} = scope, %OutageReport{} = outage_report) do
+    is_admin = scope.role == :admin
+    is_owner = scope.user && outage_report.reported_by == scope.user.profile.id
+
+    if is_admin or is_owner do
+      Repo.delete(outage_report)
+      |> broadcast(:outage_report_deleted)
+    else
+      {:error, :unauthorized}
+    end
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking outage_report changes.
+  Returns a data structure for tracking outage_report changes.
 
   ## Examples
 
-      iex> change_outage_report(outage_report)
-      %Ecto.Changeset{data: %OutageReport{}}
+      iex> change_outage_report(scope, outage_report)
+      %Todo{...}
 
   """
   def change_outage_report(%OutageReport{} = outage_report, attrs \\ %{}) do
     OutageReport.changeset(outage_report, attrs)
   end
 
-  alias Beacon.Ops.Assignment
-
   @doc """
-  Returns the list of assignments.
-
-  ## Examples
-
-      iex> list_assignments()
-      [%Assignment{}, ...]
-
+  Subscribes to scoped notifications about any announcement changes.
   """
-  def list_assignments do
-    Repo.all(Assignment)
+  def subscribe_announcement(%Scope{} = _scope) do
+    raise "TODO"
   end
-
-  @doc """
-  Gets a single assignment.
-
-  Raises `Ecto.NoResultsError` if the Assignment does not exist.
-
-  ## Examples
-
-      iex> get_assignment!(123)
-      %Assignment{}
-
-      iex> get_assignment!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_assignment!(id), do: Repo.get!(Assignment, id)
-
-  @doc """
-  Creates a assignment.
-
-  ## Examples
-
-      iex> create_assignment(%{field: value})
-      {:ok, %Assignment{}}
-
-      iex> create_assignment(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_assignment(attrs) do
-    %Assignment{}
-    |> Assignment.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a assignment.
-
-  ## Examples
-
-      iex> update_assignment(assignment, %{field: new_value})
-      {:ok, %Assignment{}}
-
-      iex> update_assignment(assignment, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_assignment(%Assignment{} = assignment, attrs) do
-    assignment
-    |> Assignment.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a assignment.
-
-  ## Examples
-
-      iex> delete_assignment(assignment)
-      {:ok, %Assignment{}}
-
-      iex> delete_assignment(assignment)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_assignment(%Assignment{} = assignment) do
-    Repo.delete(assignment)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking assignment changes.
-
-  ## Examples
-
-      iex> change_assignment(assignment)
-      %Ecto.Changeset{data: %Assignment{}}
-
-  """
-  def change_assignment(%Assignment{} = assignment, attrs \\ %{}) do
-    Assignment.changeset(assignment, attrs)
-  end
-
-  alias Beacon.Ops.Crew
-
-  @doc """
-  Returns the list of crews.
-
-  ## Examples
-
-      iex> list_crews()
-      [%Crew{}, ...]
-
-  """
-  def list_crews do
-    Repo.all(Crew)
-  end
-
-  @doc """
-  Gets a single crew.
-
-  Raises `Ecto.NoResultsError` if the Crew does not exist.
-
-  ## Examples
-
-      iex> get_crew!(123)
-      %Crew{}
-
-      iex> get_crew!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_crew!(id), do: Repo.get!(Crew, id)
-
-  @doc """
-  Creates a crew.
-
-  ## Examples
-
-      iex> create_crew(%{field: value})
-      {:ok, %Crew{}}
-
-      iex> create_crew(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_crew(attrs) do
-    %Crew{}
-    |> Crew.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a crew.
-
-  ## Examples
-
-      iex> update_crew(crew, %{field: new_value})
-      {:ok, %Crew{}}
-
-      iex> update_crew(crew, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_crew(%Crew{} = crew, attrs) do
-    crew
-    |> Crew.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a crew.
-
-  ## Examples
-
-      iex> delete_crew(crew)
-      {:ok, %Crew{}}
-
-      iex> delete_crew(crew)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_crew(%Crew{} = crew) do
-    Repo.delete(crew)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking crew changes.
-
-  ## Examples
-
-      iex> change_crew(crew)
-      %Ecto.Changeset{data: %Crew{}}
-
-  """
-  def change_crew(%Crew{} = crew, attrs \\ %{}) do
-    Crew.changeset(crew, attrs)
-  end
-
-  alias Beacon.Ops.CrewMember
-
-  @doc """
-  Returns the list of crew_members.
-
-  ## Examples
-
-      iex> list_crew_members()
-      [%CrewMember{}, ...]
-
-  """
-  def list_crew_members do
-    Repo.all(CrewMember)
-  end
-
-  @doc """
-  Gets a single crew_member.
-
-  Raises `Ecto.NoResultsError` if the Crew member does not exist.
-
-  ## Examples
-
-      iex> get_crew_member!(123)
-      %CrewMember{}
-
-      iex> get_crew_member!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_crew_member!(id), do: Repo.get!(CrewMember, id)
-
-  @doc """
-  Creates a crew_member.
-
-  ## Examples
-
-      iex> create_crew_member(%{field: value})
-      {:ok, %CrewMember{}}
-
-      iex> create_crew_member(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_crew_member(attrs) do
-    %CrewMember{}
-    |> CrewMember.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a crew_member.
-
-  ## Examples
-
-      iex> update_crew_member(crew_member, %{field: new_value})
-      {:ok, %CrewMember{}}
-
-      iex> update_crew_member(crew_member, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_crew_member(%CrewMember{} = crew_member, attrs) do
-    crew_member
-    |> CrewMember.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a crew_member.
-
-  ## Examples
-
-      iex> delete_crew_member(crew_member)
-      {:ok, %CrewMember{}}
-
-      iex> delete_crew_member(crew_member)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_crew_member(%CrewMember{} = crew_member) do
-    Repo.delete(crew_member)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking crew_member changes.
-
-  ## Examples
-
-      iex> change_crew_member(crew_member)
-      %Ecto.Changeset{data: %CrewMember{}}
-
-  """
-  def change_crew_member(%CrewMember{} = crew_member, attrs \\ %{}) do
-    CrewMember.changeset(crew_member, attrs)
-  end
-
-  alias Beacon.Ops.Announcement
 
   @doc """
   Returns the list of announcements.
 
   ## Examples
 
-      iex> list_announcements()
+      iex> list_announcements(scope)
       [%Announcement{}, ...]
 
   """
-  def list_announcements do
-    Repo.all(Announcement)
+  def list_announcements(%Scope{} = _scope) do
+    raise "TODO"
   end
 
   @doc """
   Gets a single announcement.
 
-  Raises `Ecto.NoResultsError` if the Announcement does not exist.
+  Raises if the Announcement does not exist.
 
   ## Examples
 
-      iex> get_announcement!(123)
+      iex> get_announcement!(scope, 123)
       %Announcement{}
 
-      iex> get_announcement!(456)
-      ** (Ecto.NoResultsError)
-
   """
-  def get_announcement!(id), do: Repo.get!(Announcement, id)
+  def get_announcement!(%Scope{} = _scope, id), do: raise "TODO"
 
   @doc """
   Creates a announcement.
 
   ## Examples
 
-      iex> create_announcement(%{field: value})
+      iex> create_announcement(scope, %{field: value})
       {:ok, %Announcement{}}
 
-      iex> create_announcement(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> create_announcement(scope, %{field: bad_value})
+      {:error, ...}
 
   """
-  def create_announcement(attrs) do
-    %Announcement{}
-    |> Announcement.changeset(attrs)
-    |> Repo.insert()
+  def create_announcement(%Scope{} = _scope, attrs) do
+    raise "TODO"
   end
 
   @doc """
@@ -640,237 +309,137 @@ defmodule Beacon.Ops do
 
   ## Examples
 
-      iex> update_announcement(announcement, %{field: new_value})
+      iex> update_announcement(scope, announcement, %{field: new_value})
       {:ok, %Announcement{}}
 
-      iex> update_announcement(announcement, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> update_announcement(scope, announcement, %{field: bad_value})
+      {:error, ...}
 
   """
-  def update_announcement(%Announcement{} = announcement, attrs) do
-    announcement
-    |> Announcement.changeset(attrs)
-    |> Repo.update()
+  def update_announcement(%Scope{} = _scope, %Announcement{} = announcement, attrs) do
+    raise "TODO"
   end
 
   @doc """
-  Deletes a announcement.
+  Deletes a Announcement.
 
   ## Examples
 
-      iex> delete_announcement(announcement)
+      iex> delete_announcement(scope, announcement)
       {:ok, %Announcement{}}
 
-      iex> delete_announcement(announcement)
-      {:error, %Ecto.Changeset{}}
+      iex> delete_announcement(scope, announcement)
+      {:error, ...}
 
   """
-  def delete_announcement(%Announcement{} = announcement) do
-    Repo.delete(announcement)
+  def delete_announcement(%Scope{} = _scope, %Announcement{} = announcement) do
+    raise "TODO"
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking announcement changes.
+  Returns a data structure for tracking announcement changes.
 
   ## Examples
 
-      iex> change_announcement(announcement)
-      %Ecto.Changeset{data: %Announcement{}}
+      iex> change_announcement(scope, announcement)
+      %Todo{...}
 
   """
-  def change_announcement(%Announcement{} = announcement, attrs \\ %{}) do
-    Announcement.changeset(announcement, attrs)
-  end
-
-  alias Beacon.Ops.AnnouncementScope
-
-  @doc """
-  Returns the list of announcement_scopes.
-
-  ## Examples
-
-      iex> list_announcement_scopes()
-      [%AnnouncementScope{}, ...]
-
-  """
-  def list_announcement_scopes do
-    Repo.all(AnnouncementScope)
+  def change_announcement(%Scope{} = _scope, %Announcement{} = announcement, _attrs \\ %{}) do
+    raise "TODO"
   end
 
   @doc """
-  Gets a single announcement_scope.
-
-  Raises `Ecto.NoResultsError` if the Announcement scope does not exist.
-
-  ## Examples
-
-      iex> get_announcement_scope!(123)
-      %AnnouncementScope{}
-
-      iex> get_announcement_scope!(456)
-      ** (Ecto.NoResultsError)
-
+  Subscribes to scoped notifications about any assignment changes.
   """
-  def get_announcement_scope!(id), do: Repo.get!(AnnouncementScope, id)
-
-  @doc """
-  Creates a announcement_scope.
-
-  ## Examples
-
-      iex> create_announcement_scope(%{field: value})
-      {:ok, %AnnouncementScope{}}
-
-      iex> create_announcement_scope(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_announcement_scope(attrs) do
-    %AnnouncementScope{}
-    |> AnnouncementScope.changeset(attrs)
-    |> Repo.insert()
+  def subscribe_assignment(%Scope{} = _scope) do
+    raise "TODO"
   end
 
   @doc """
-  Updates a announcement_scope.
+  Returns the list of assignments.
 
   ## Examples
 
-      iex> update_announcement_scope(announcement_scope, %{field: new_value})
-      {:ok, %AnnouncementScope{}}
-
-      iex> update_announcement_scope(announcement_scope, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> list_assignments(scope)
+      [%Assignment{}, ...]
 
   """
-  def update_announcement_scope(%AnnouncementScope{} = announcement_scope, attrs) do
-    announcement_scope
-    |> AnnouncementScope.changeset(attrs)
-    |> Repo.update()
+  def list_assignments(%Scope{} = _scope) do
+    raise "TODO"
   end
 
   @doc """
-  Deletes a announcement_scope.
+  Gets a single assignment.
+
+  Raises if the Assignment does not exist.
 
   ## Examples
 
-      iex> delete_announcement_scope(announcement_scope)
-      {:ok, %AnnouncementScope{}}
-
-      iex> delete_announcement_scope(announcement_scope)
-      {:error, %Ecto.Changeset{}}
+      iex> get_assignment!(scope, 123)
+      %Assignment{}
 
   """
-  def delete_announcement_scope(%AnnouncementScope{} = announcement_scope) do
-    Repo.delete(announcement_scope)
+  def get_assignment!(%Scope{} = _scope, id), do: raise "TODO"
+
+  @doc """
+  Creates a assignment.
+
+  ## Examples
+
+      iex> create_assignment(scope, %{field: value})
+      {:ok, %Assignment{}}
+
+      iex> create_assignment(scope, %{field: bad_value})
+      {:error, ...}
+
+  """
+  def create_assignment(%Scope{} = _scope, attrs) do
+    raise "TODO"
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking announcement_scope changes.
+  Updates a assignment.
 
   ## Examples
 
-      iex> change_announcement_scope(announcement_scope)
-      %Ecto.Changeset{data: %AnnouncementScope{}}
+      iex> update_assignment(scope, assignment, %{field: new_value})
+      {:ok, %Assignment{}}
+
+      iex> update_assignment(scope, assignment, %{field: bad_value})
+      {:error, ...}
 
   """
-  def change_announcement_scope(%AnnouncementScope{} = announcement_scope, attrs \\ %{}) do
-    AnnouncementScope.changeset(announcement_scope, attrs)
-  end
-
-  alias Beacon.Ops.AffectedArea
-
-  @doc """
-  Returns the list of affected_areas.
-
-  ## Examples
-
-      iex> list_affected_areas()
-      [%AffectedArea{}, ...]
-
-  """
-  def list_affected_areas do
-    Repo.all(AffectedArea)
+  def update_assignment(%Scope{} = _scope, %Assignment{} = assignment, attrs) do
+    raise "TODO"
   end
 
   @doc """
-  Gets a single affected_area.
-
-  Raises `Ecto.NoResultsError` if the Affected area does not exist.
+  Deletes a Assignment.
 
   ## Examples
 
-      iex> get_affected_area!(123)
-      %AffectedArea{}
+      iex> delete_assignment(scope, assignment)
+      {:ok, %Assignment{}}
 
-      iex> get_affected_area!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_affected_area!(id), do: Repo.get!(AffectedArea, id)
-
-  @doc """
-  Creates a affected_area.
-
-  ## Examples
-
-      iex> create_affected_area(%{field: value})
-      {:ok, %AffectedArea{}}
-
-      iex> create_affected_area(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> delete_assignment(scope, assignment)
+      {:error, ...}
 
   """
-  def create_affected_area(attrs) do
-    %AffectedArea{}
-    |> AffectedArea.changeset(attrs)
-    |> Repo.insert()
+  def delete_assignment(%Scope{} = _scope, %Assignment{} = assignment) do
+    raise "TODO"
   end
 
   @doc """
-  Updates a affected_area.
+  Returns a data structure for tracking assignment changes.
 
   ## Examples
 
-      iex> update_affected_area(affected_area, %{field: new_value})
-      {:ok, %AffectedArea{}}
-
-      iex> update_affected_area(affected_area, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> change_assignment(scope, assignment)
+      %Todo{...}
 
   """
-  def update_affected_area(%AffectedArea{} = affected_area, attrs) do
-    affected_area
-    |> AffectedArea.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a affected_area.
-
-  ## Examples
-
-      iex> delete_affected_area(affected_area)
-      {:ok, %AffectedArea{}}
-
-      iex> delete_affected_area(affected_area)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_affected_area(%AffectedArea{} = affected_area) do
-    Repo.delete(affected_area)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking affected_area changes.
-
-  ## Examples
-
-      iex> change_affected_area(affected_area)
-      %Ecto.Changeset{data: %AffectedArea{}}
-
-  """
-  def change_affected_area(%AffectedArea{} = affected_area, attrs \\ %{}) do
-    AffectedArea.changeset(affected_area, attrs)
+  def change_assignment(%Scope{} = _scope, %Assignment{} = assignment, _attrs \\ %{}) do
+    raise "TODO"
   end
 end

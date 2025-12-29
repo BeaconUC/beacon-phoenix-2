@@ -7,290 +7,99 @@ defmodule Beacon.Iam do
   alias Beacon.Repo
 
   alias Beacon.Iam.Profile
+  alias Beacon.Accounts.Scope
 
   @doc """
-  Returns the list of profiles.
+  Subscribes to scoped notifications about any profile changes.
+  """
+  def subscribe_profile(%Scope{} = _scope) do
+    raise "TODO"
+  end
+
+  @doc """
+  Returns the list of profiles--no-migration.
 
   ## Examples
 
-      iex> list_profiles()
+      iex> list_profiles--no-migration(scope)
       [%Profile{}, ...]
 
   """
-  def list_profiles do
-    Repo.all(Profile)
+  def list_profiles(%Scope{} = _scope) do
+    raise "TODO"
   end
 
   @doc """
   Gets a single profile.
 
-  Raises `Ecto.NoResultsError` if the Profile does not exist.
+  Raises if the Profile does not exist.
 
   ## Examples
 
-      iex> get_profile!(123)
+      iex> get_profile!(scope, 123)
       %Profile{}
 
-      iex> get_profile!(456)
-      ** (Ecto.NoResultsError)
+  """
+  def get_profile!(%Scope{} = _scope, id), do: raise "TODO"
+
+  @doc """
+  Creates a profile.
+
+  ## Examples
+
+      iex> create_profile(scope, %{field: value})
+      {:ok, %Profile{}}
+
+      iex> create_profile(scope, %{field: bad_value})
+      {:error, ...}
 
   """
-  def get_profile!(id), do: Repo.get!(Profile, id)
-
-  # @doc """
-  # Creates a profile.
-
-  # ## Examples
-
-  #     iex> create_profile(%{field: value})
-  #     {:ok, %Profile{}}
-
-  #     iex> create_profile(%{field: bad_value})
-  #     {:error, %Ecto.Changeset{}}
-
-  # """
-  # def create_profile(attrs) do
-  #   %Profile{}
-  #   |> Profile.changeset(attrs)
-  #   |> Repo.insert()
-  # end
+  def create_profile(%Scope{} = _scope, attrs) do
+    raise "TODO"
+  end
 
   @doc """
   Updates a profile.
 
   ## Examples
 
-      iex> update_profile(profile, %{field: new_value})
+      iex> update_profile(scope, profile, %{field: new_value})
       {:ok, %Profile{}}
 
-      iex> update_profile(profile, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> update_profile(scope, profile, %{field: bad_value})
+      {:error, ...}
 
   """
-  def update_profile(%Profile{} = profile, attrs) do
-    profile
-    |> Profile.changeset(attrs)
-    |> Repo.update()
-  end
-
-  # @doc """
-  # Deletes a profile.
-
-  # ## Examples
-
-  #     iex> delete_profile(profile)
-  #     {:ok, %Profile{}}
-
-  #     iex> delete_profile(profile)
-  #     {:error, %Ecto.Changeset{}}
-
-  # """
-  # def delete_profile(%Profile{} = profile) do
-  #   Repo.delete(profile)
-  # end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking profile changes.
-
-  ## Examples
-
-      iex> change_profile(profile)
-      %Ecto.Changeset{data: %Profile{}}
-
-  """
-  def change_profile(%Profile{} = profile, attrs \\ %{}) do
-    Profile.changeset(profile, attrs)
-  end
-
-  alias Beacon.Iam.ProfileSetting
-
-  @doc """
-  Returns the list of profile_settings.
-
-  ## Examples
-
-      iex> list_profile_settings()
-      [%ProfileSetting{}, ...]
-
-  """
-  def list_profile_settings do
-    Repo.all(ProfileSetting)
+  def update_profile(%Scope{} = _scope, %Profile{} = profile, attrs) do
+    raise "TODO"
   end
 
   @doc """
-  Gets a single profile_setting.
-
-  Raises `Ecto.NoResultsError` if the Profile setting does not exist.
+  Deletes a Profile.
 
   ## Examples
 
-      iex> get_profile_setting!(123)
-      %ProfileSetting{}
+      iex> delete_profile(scope, profile)
+      {:ok, %Profile{}}
 
-      iex> get_profile_setting!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_profile_setting!(id), do: Repo.get!(ProfileSetting, id)
-
-  @doc """
-  Creates a profile_setting.
-
-  ## Examples
-
-      iex> create_profile_setting(%{field: value})
-      {:ok, %ProfileSetting{}}
-
-      iex> create_profile_setting(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> delete_profile(scope, profile)
+      {:error, ...}
 
   """
-  def create_profile_setting(attrs) do
-    %ProfileSetting{}
-    |> ProfileSetting.changeset(attrs)
-    |> Repo.insert()
+  def delete_profile(%Scope{} = _scope, %Profile{} = profile) do
+    raise "TODO"
   end
 
   @doc """
-  Updates a profile_setting.
+  Returns a data structure for tracking profile changes.
 
   ## Examples
 
-      iex> update_profile_setting(profile_setting, %{field: new_value})
-      {:ok, %ProfileSetting{}}
-
-      iex> update_profile_setting(profile_setting, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> change_profile(scope, profile)
+      %Todo{...}
 
   """
-  def update_profile_setting(%ProfileSetting{} = profile_setting, attrs) do
-    profile_setting
-    |> ProfileSetting.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a profile_setting.
-
-  ## Examples
-
-      iex> delete_profile_setting(profile_setting)
-      {:ok, %ProfileSetting{}}
-
-      iex> delete_profile_setting(profile_setting)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_profile_setting(%ProfileSetting{} = profile_setting) do
-    Repo.delete(profile_setting)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking profile_setting changes.
-
-  ## Examples
-
-      iex> change_profile_setting(profile_setting)
-      %Ecto.Changeset{data: %ProfileSetting{}}
-
-  """
-  def change_profile_setting(%ProfileSetting{} = profile_setting, attrs \\ %{}) do
-    ProfileSetting.changeset(profile_setting, attrs)
-  end
-
-  alias Beacon.Iam.ApiKey
-
-  @doc """
-  Returns the list of api_keys.
-
-  ## Examples
-
-      iex> list_api_keys()
-      [%ApiKey{}, ...]
-
-  """
-  def list_api_keys do
-    Repo.all(ApiKey)
-  end
-
-  @doc """
-  Gets a single api_key.
-
-  Raises `Ecto.NoResultsError` if the Api key does not exist.
-
-  ## Examples
-
-      iex> get_api_key!(123)
-      %ApiKey{}
-
-      iex> get_api_key!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_api_key!(id), do: Repo.get!(ApiKey, id)
-
-  @doc """
-  Creates a api_key.
-
-  ## Examples
-
-      iex> create_api_key(%{field: value})
-      {:ok, %ApiKey{}}
-
-      iex> create_api_key(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_api_key(attrs) do
-    %ApiKey{}
-    |> ApiKey.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a api_key.
-
-  ## Examples
-
-      iex> update_api_key(api_key, %{field: new_value})
-      {:ok, %ApiKey{}}
-
-      iex> update_api_key(api_key, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_api_key(%ApiKey{} = api_key, attrs) do
-    api_key
-    |> ApiKey.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a api_key.
-
-  ## Examples
-
-      iex> delete_api_key(api_key)
-      {:ok, %ApiKey{}}
-
-      iex> delete_api_key(api_key)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_api_key(%ApiKey{} = api_key) do
-    Repo.delete(api_key)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking api_key changes.
-
-  ## Examples
-
-      iex> change_api_key(api_key)
-      %Ecto.Changeset{data: %ApiKey{}}
-
-  """
-  def change_api_key(%ApiKey{} = api_key, attrs \\ %{}) do
-    ApiKey.changeset(api_key, attrs)
+  def change_profile(%Scope{} = _scope, %Profile{} = profile, _attrs \\ %{}) do
+    raise "TODO"
   end
 end
