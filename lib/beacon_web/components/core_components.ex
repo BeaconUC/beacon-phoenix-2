@@ -57,7 +57,7 @@ defmodule BeaconWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class="toast toast-top toast-end z-50"
-      phx-mounted={JS.dispatch("myapp:auto-clear", detail: %{timeout: 5000, attr: "phx-click"})}
+      phx-mounted={JS.dispatch("beacon:auto-clear", detail: %{timeout: 5000, attr: "phx-click"})}
       {@rest}
     >
       <div class={[

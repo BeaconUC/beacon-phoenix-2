@@ -40,7 +40,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
-window.addEventListener("myapp:auto-clear", (e) => {
+window.addEventListener("beacon:auto-clear", (e) => {
   let el = e.target;
   setTimeout(() => liveSocket.execJS(el, el.getAttribute(e.detail.attr)), e.detail.timeout);
 });
