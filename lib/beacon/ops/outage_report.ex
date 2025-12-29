@@ -14,7 +14,7 @@ defmodule Beacon.Ops.OutageReport do
 
     field :status, Ecto.Enum, values: Enum.report_status_values()
 
-    belongs_to :reported_by, Beacon.Iam.Profile
+    belongs_to :reported_by_profile, Beacon.Iam.Profile, foreign_key: :reported_by
     belongs_to :linked_outage, Beacon.Ops.Outage
     belongs_to :barangay, Beacon.Geo.Barangay
 
@@ -22,20 +22,20 @@ defmodule Beacon.Ops.OutageReport do
   end
 
   @required_fields [
-    :public_id,
-    :location,
-    :status
+
   ]
   @optional_fields [
+    :status,
     :description,
     :image_url,
-    :reported_by_id,
+    :reported_by,
     :linked_outage_id,
     :barangay_id
   ]
   def changeset(outage_report, attrs) do
     outage_report
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> maybe_put_location(attrs)
     |> validate_required(@required_fields)
     |> validate_length(:description, max: Constant.text_max_length())
     |> foreign_key_constraint(:reported_by_id)
@@ -43,4 +43,9 @@ defmodule Beacon.Ops.OutageReport do
     |> foreign_key_constraint(:barangay_id)
     |> unique_constraint(:public_id, name: :outage_reports_public_id_idx)
   end
+
+  defp maybe_put_location(changeset, %{"location" => %Geo.Point{} = point}) do
+    put_change(changeset, :location, point)
+  end
+  defp maybe_put_location(changeset, _), do: changeset
 end
