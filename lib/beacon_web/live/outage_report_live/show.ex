@@ -39,19 +39,20 @@ defmodule BeaconWeb.OutageReportLive.Show do
   end
 
   @impl true
-  def handle_info({event, updated_report}, socket) do
-    case event do
-      :outage_report_updated ->
-        {:noreply, assign(socket, :outage_report, updated_report)}
+  def handle_info({:outage_report_updated, report}, socket) do
+    {:noreply, assign(socket, :outage_report, report)}
+  end
 
-      :outage_report_deleted ->
-        {:noreply,
-        socket
-        |> put_flash(:info, "This report has been deleted.")
-        |> push_navigate(to: ~p"/outage_reports")}
+  @impl true
+  def handle_info({:outage_report_deleted, _report}, socket) do
+    {:noreply,
+      socket
+      |> put_flash(:info, "This report has been deleted.")
+      |> push_navigate(to: ~p"/outage_reports")}
+  end
 
-      _ ->
-        {:noreply, socket}
-    end
+  @impl true
+  def handle_info({_event, _report}, socket) do
+    {:noreply, socket}
   end
 end
