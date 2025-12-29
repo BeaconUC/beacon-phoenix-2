@@ -59,6 +59,11 @@ defmodule BeaconWeb.Router do
       live "/outage_reports/new", OutageReportLive.Form, :new
       live "/outage_reports/:id", OutageReportLive.Show, :show
       live "/outage_reports/:id/edit", OutageReportLive.Form, :edit
+
+      live "/outages", OutageLive.Index, :index
+      live "/outages/new", OutageLive.Form, :new
+      live "/outages/:id", OutageLive.Show, :show
+      live "/outages/:id/edit", OutageLive.Form, :edit
     end
 
     post "/users/update-password", UserSessionController, :update_password
