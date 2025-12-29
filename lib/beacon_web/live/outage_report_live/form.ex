@@ -196,7 +196,7 @@ defmodule BeaconWeb.OutageReportLive.Form do
          |> push_navigate(to: return_path(socket.assigns.return_to, outage_report))}
 
       {:error, :unauthorized} ->
-        {:noreply, put_flash(socket, :error, "Unauthorized action.")}
+        {:noreply, put_flash(socket, :error, "You are not authorized to update this report.")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}

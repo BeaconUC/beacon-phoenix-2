@@ -58,7 +58,11 @@ defmodule BeaconWeb.OutageReportLive.Index do
 
     case Ops.delete_outage_report(socket.assigns.current_scope, outage_report) do
       {:ok, _outage_report} ->
-        {:noreply, stream_delete(socket, :outage_reports, outage_report)}
+        {:noreply,
+          socket
+          |> put_flash(:info, "Outage report deleted successfully.")
+          |> stream_delete(:outage_reports, outage_report)
+        }
 
       {:error, :unauthorized} ->
         {:noreply, put_flash(socket, :error, "You are not authorized to delete this report.")}
