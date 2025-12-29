@@ -66,4 +66,10 @@ defmodule Beacon.Iam.Profile do
         |> add_error(:last_name, "must be present if first name is present")
     end
   end
+
+  defimpl Phoenix.HTML.Safe, for: Geo.Point do
+    def to_iodata(%Geo.Point{coordinates: {lng, lat}}) do
+      Plug.HTML.html_escape("#{Float.round(lat, 6)}, #{Float.round(lng, 6)}")
+    end
+  end
 end
