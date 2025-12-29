@@ -191,9 +191,9 @@ defmodule BeaconWeb.OutageReportLive.Form do
     case Ops.update_outage_report(socket.assigns.current_scope, socket.assigns.outage_report, outage_report_params) do
       {:ok, outage_report} ->
         {:noreply,
-         socket
-         |> put_flash(:info, "Outage report updated successfully")
-         |> push_navigate(to: return_path(socket.assigns.return_to, outage_report))}
+          socket
+          |> put_flash(:info, "Outage report updated successfully")
+          |> push_navigate(to: return_path(socket.assigns.return_to, outage_report))}
 
       {:error, :unauthorized} ->
         {:noreply, put_flash(socket, :error, "You are not authorized to update this report.")}

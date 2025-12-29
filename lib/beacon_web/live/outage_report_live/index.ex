@@ -65,7 +65,7 @@ defmodule BeaconWeb.OutageReportLive.Index do
         }
 
       {:error, :unauthorized} ->
-        {:noreply, put_flash(socket, :error, "You are not authorized to delete this report.")}
+        {:noreply, put_flash(socket, :error, "You are not authorized to delete this outage report.")}
     end
   end
 
