@@ -9,9 +9,7 @@ defmodule Beacon.IamFixtures do
   """
   def profile_fixture(scope, attrs \\ %{}) do
     attrs =
-      Enum.into(attrs, %{
-
-      })
+      Enum.into(attrs, %{})
 
     {:ok, profile} = Beacon.Iam.create_profile(scope, attrs)
     profile

@@ -10,9 +10,7 @@ defmodule Beacon.SysFixtures do
   def system_config_fixture(attrs \\ %{}) do
     {:ok, system_config} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Sys.create_system_config()
 
     system_config

@@ -34,7 +34,8 @@ defmodule Beacon.SysTest do
       system_config = system_config_fixture()
       update_attrs = %{}
 
-      assert {:ok, %SystemConfig{} = system_config} = Sys.update_system_config(system_config, update_attrs)
+      assert {:ok, %SystemConfig{} = system_config} =
+               Sys.update_system_config(system_config, update_attrs)
     end
 
     test "update_system_config/2 with invalid data returns error changeset" do

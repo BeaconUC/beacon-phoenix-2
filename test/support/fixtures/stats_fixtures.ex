@@ -10,9 +10,7 @@ defmodule Beacon.StatsFixtures do
   def weather_observation_fixture(attrs \\ %{}) do
     {:ok, weather_observation} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Stats.create_weather_observation()
 
     weather_observation
@@ -24,9 +22,7 @@ defmodule Beacon.StatsFixtures do
   def psa_population_stat_fixture(attrs \\ %{}) do
     {:ok, psa_population_stat} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Stats.create_psa_population_stat()
 
     psa_population_stat
@@ -38,9 +34,7 @@ defmodule Beacon.StatsFixtures do
   def psa_poverty_stat_fixture(attrs \\ %{}) do
     {:ok, psa_poverty_stat} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Stats.create_psa_poverty_stat()
 
     psa_poverty_stat
@@ -52,9 +46,7 @@ defmodule Beacon.StatsFixtures do
   def psa_income_expenditure_fixture(attrs \\ %{}) do
     {:ok, psa_income_expenditure} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Stats.create_psa_income_expenditure()
 
     psa_income_expenditure
@@ -66,9 +58,7 @@ defmodule Beacon.StatsFixtures do
   def psa_price_index_fixture(attrs \\ %{}) do
     {:ok, psa_price_index} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Stats.create_psa_price_index()
 
     psa_price_index
@@ -80,9 +70,7 @@ defmodule Beacon.StatsFixtures do
   def psa_economic_performance_fixture(attrs \\ %{}) do
     {:ok, psa_economic_performance} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Stats.create_psa_economic_performance()
 
     psa_economic_performance

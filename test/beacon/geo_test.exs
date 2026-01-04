@@ -346,12 +346,16 @@ defmodule Beacon.GeoTest do
       barangay_feeder = barangay_feeder_fixture()
       update_attrs = %{}
 
-      assert {:ok, %BarangayFeeder{} = barangay_feeder} = Geo.update_barangay_feeder(barangay_feeder, update_attrs)
+      assert {:ok, %BarangayFeeder{} = barangay_feeder} =
+               Geo.update_barangay_feeder(barangay_feeder, update_attrs)
     end
 
     test "update_barangay_feeder/2 with invalid data returns error changeset" do
       barangay_feeder = barangay_feeder_fixture()
-      assert {:error, %Ecto.Changeset{}} = Geo.update_barangay_feeder(barangay_feeder, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Geo.update_barangay_feeder(barangay_feeder, @invalid_attrs)
+
       assert barangay_feeder == Geo.get_barangay_feeder!(barangay_feeder.id)
     end
 

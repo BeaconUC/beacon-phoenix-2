@@ -4,9 +4,39 @@ defmodule BeaconWeb.OutageLiveTest do
   import Phoenix.LiveViewTest
   import Beacon.OpsFixtures
 
-  @create_attrs %{status: :unverified, description: "some description", title: "some title", outage_type: :unscheduled, confidence_percentage: 120.5, start_time: "2025-12-28T13:34:00Z", estimated_restoration_time: "2025-12-28T13:34:00Z", actual_restoration_time: "2025-12-28T13:34:00Z", provider_id: 42}
-  @update_attrs %{status: :verified, description: "some updated description", title: "some updated title", outage_type: :scheduled, confidence_percentage: 456.7, start_time: "2025-12-29T13:34:00Z", estimated_restoration_time: "2025-12-29T13:34:00Z", actual_restoration_time: "2025-12-29T13:34:00Z", provider_id: 43}
-  @invalid_attrs %{status: nil, description: nil, title: nil, outage_type: nil, confidence_percentage: nil, start_time: nil, estimated_restoration_time: nil, actual_restoration_time: nil, provider_id: nil}
+  @create_attrs %{
+    status: :unverified,
+    description: "some description",
+    title: "some title",
+    outage_type: :unscheduled,
+    confidence_percentage: 120.5,
+    start_time: "2025-12-28T13:34:00Z",
+    estimated_restoration_time: "2025-12-28T13:34:00Z",
+    actual_restoration_time: "2025-12-28T13:34:00Z",
+    provider_id: 42
+  }
+  @update_attrs %{
+    status: :verified,
+    description: "some updated description",
+    title: "some updated title",
+    outage_type: :scheduled,
+    confidence_percentage: 456.7,
+    start_time: "2025-12-29T13:34:00Z",
+    estimated_restoration_time: "2025-12-29T13:34:00Z",
+    actual_restoration_time: "2025-12-29T13:34:00Z",
+    provider_id: 43
+  }
+  @invalid_attrs %{
+    status: nil,
+    description: nil,
+    title: nil,
+    outage_type: nil,
+    confidence_percentage: nil,
+    start_time: nil,
+    estimated_restoration_time: nil,
+    actual_restoration_time: nil,
+    provider_id: nil
+  }
   defp create_outage(_) do
     outage = outage_fixture()
 

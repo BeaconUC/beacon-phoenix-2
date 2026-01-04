@@ -16,8 +16,8 @@ defmodule Beacon.IamTest do
       other_scope = user_scope_fixture()
       profile = profile_fixture(scope)
       other_profile = profile_fixture(other_scope)
-      assert Iam.list_profiles--no-migration(scope) == [profile]
-      assert Iam.list_profiles--no-migration(other_scope) == [other_profile]
+      assert Iam.list_profiles() -- (no - migration(scope)) == [profile]
+      assert Iam.list_profiles() -- (no - migration(other_scope)) == [other_profile]
     end
 
     test "get_profile!/2 returns the profile with given id" do
