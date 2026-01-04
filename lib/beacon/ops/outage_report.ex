@@ -1,7 +1,7 @@
 defmodule Beacon.Ops.OutageReport do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
 
@@ -21,9 +21,7 @@ defmodule Beacon.Ops.OutageReport do
     timestamps()
   end
 
-  @required_fields [
-
-  ]
+  @required_fields []
   @optional_fields [
     :status,
     :description,
@@ -47,5 +45,6 @@ defmodule Beacon.Ops.OutageReport do
   defp maybe_put_location(changeset, %{"location" => %Geo.Point{} = point}) do
     put_change(changeset, :location, point)
   end
+
   defp maybe_put_location(changeset, _), do: changeset
 end

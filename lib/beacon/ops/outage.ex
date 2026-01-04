@@ -1,18 +1,16 @@
 defmodule Beacon.Ops.Outage do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
 
   schema "outages" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
 
-    field :outage_type, Ecto.Enum,
-      values: Enum.outage_type_values()
+    field :outage_type, Ecto.Enum, values: Enum.outage_type_values()
 
-    field :status, Ecto.Enum,
-      values: Enum.outage_status_values()
+    field :status, Ecto.Enum, values: Enum.outage_status_values()
 
     field :confidence_percentage, :float, default: 100.0
 
@@ -63,7 +61,10 @@ defmodule Beacon.Ops.Outage do
     outage
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_number(:confidence_percentage, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)
+    |> validate_number(:confidence_percentage,
+      greater_than_or_equal_to: 0.0,
+      less_than_or_equal_to: 100.0
+    )
     |> validate_number(:number_of_reports, greater_than_or_equal_to: 0)
     |> validate_number(:estimated_affected_population, greater_than_or_equal_to: 0)
     |> validate_length(:title, max: Constant.varchar_max_length())

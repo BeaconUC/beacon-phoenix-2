@@ -36,7 +36,10 @@ defmodule Beacon.Stats.PsaIncomeExpenditure do
     |> validate_number(:year, greater_than_or_equal_to: Constant.psa_min_year())
     |> validate_number(:avg_family_income, greater_than_or_equal_to: 0)
     |> validate_number(:avg_family_expenditure, greater_than_or_equal_to: 0)
-    |> validate_number(:gini_coefficient, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 1.0)
+    |> validate_number(:gini_coefficient,
+      greater_than_or_equal_to: 0.0,
+      less_than_or_equal_to: 1.0
+    )
     |> foreign_key_constraint(:region_id)
     |> unique_constraint(
       [:region_id, :year],

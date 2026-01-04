@@ -1,7 +1,7 @@
 defmodule Beacon.Ops.Assignment do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
 

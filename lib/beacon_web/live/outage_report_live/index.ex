@@ -61,13 +61,13 @@ defmodule BeaconWeb.OutageReportLive.Index do
     case Ops.delete_outage_report(socket.assigns.current_scope, outage_report) do
       {:ok, _outage_report} ->
         {:noreply,
-          socket
-          |> put_flash(:info, "Outage report deleted successfully.")
-          |> stream_delete(:outage_reports, outage_report)
-        }
+         socket
+         |> put_flash(:info, "Outage report deleted successfully.")
+         |> stream_delete(:outage_reports, outage_report)}
 
       {:error, :unauthorized} ->
-        {:noreply, put_flash(socket, :error, "You are not authorized to delete this outage report.")}
+        {:noreply,
+         put_flash(socket, :error, "You are not authorized to delete this outage report.")}
     end
   end
 
@@ -75,12 +75,12 @@ defmodule BeaconWeb.OutageReportLive.Index do
     Ops.list_outage_reports(current_scope)
   end
 
-  def handle_info({:deleted, outage_report}, socket) do
+  def handle_info({:outage_report_deleted, outage_report}, socket) do
     {:noreply, stream_delete(socket, :outage_reports, outage_report)}
   end
 
   @impl true
-  def handle_info({_event, _outage_report}, socket) do
+  def handle_info({_event, outage_report}, socket) do
     {:noreply, stream_insert(socket, :outage_reports, outage_report, at: 0)}
   end
 end
