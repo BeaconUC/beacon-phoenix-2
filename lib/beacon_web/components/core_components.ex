@@ -56,7 +56,7 @@ defmodule BeaconWeb.CoreComponents do
       id={@id}
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
-      class="toast toast-top toast-end z-50"
+      class="toast toast-top toast-end z-150"
       phx-mounted={JS.dispatch("beacon:auto-clear", detail: %{timeout: 5000, attr: "phx-click"})}
       {@rest}
     >
@@ -72,7 +72,7 @@ defmodule BeaconWeb.CoreComponents do
           <p>{msg}</p>
         </div>
         <div class="flex-1" />
-        <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
+        <button type="button" class="self-start cursor-pointer group" aria-label={gettext("close")}>
           <.icon name="hero-x-mark" class="size-5 opacity-40 group-hover:opacity-70" />
         </button>
       </div>
@@ -206,7 +206,7 @@ defmodule BeaconWeb.CoreComponents do
       end)
 
     ~H"""
-    <div class="fieldset mb-2">
+    <div class="mb-2 fieldset">
       <label>
         <input
           type="hidden"
@@ -234,9 +234,9 @@ defmodule BeaconWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
+    <div class="mb-2 fieldset">
       <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+        <span :if={@label} class="mb-1 label">{@label}</span>
         <select
           id={@id}
           name={@name}
@@ -255,9 +255,9 @@ defmodule BeaconWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
+    <div class="mb-2 fieldset">
       <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+        <span :if={@label} class="mb-1 label">{@label}</span>
         <textarea
           id={@id}
           name={@name}
@@ -276,9 +276,9 @@ defmodule BeaconWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div class="fieldset mb-2">
+    <div class="mb-2 fieldset">
       <label>
-        <span :if={@label} class="label mb-1">{@label}</span>
+        <span :if={@label} class="mb-1 label">{@label}</span>
         <input
           type={@type}
           name={@name}

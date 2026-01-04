@@ -60,7 +60,7 @@ defmodule BeaconWeb.Router do
       live "/outage_reports/:id", OutageReportLive.Show, :show
       live "/outage_reports/:id/edit", OutageReportLive.Form, :edit
 
-      live "/outages", OutageLive.Index, :index
+      live "/outages", OutageLive.Index
       live "/outages/new", OutageLive.Form, :new
       live "/outages/:id", OutageLive.Show, :show
       live "/outages/:id/edit", OutageLive.Form, :edit
@@ -77,6 +77,8 @@ defmodule BeaconWeb.Router do
       live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new
+
+      live "/map", MapLive.Index, :index
     end
 
     post "/users/log-in", UserSessionController, :create

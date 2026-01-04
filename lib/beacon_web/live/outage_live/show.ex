@@ -37,14 +37,14 @@ defmodule BeaconWeb.OutageLive.Show do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    if connected?(socket)
-      do: Ops.subscribe_outage(socket.assigns.current_scope, id)
+    if connected?(socket) do
+      Ops.subscribe_outage(socket.assigns.current_scope, id)
     end
 
     {:ok,
-      socket
-      |> assign(:page_title, "Show Outage")
-      |> assign(:outage, Ops.get_outage!(socket.assigns.current_scope, id))}
+     socket
+     |> assign(:page_title, "Show Outage")
+     |> assign(:outage, Ops.get_outage!(socket.assigns.current_scope, id))}
   end
 
   @impl true
@@ -55,9 +55,9 @@ defmodule BeaconWeb.OutageLive.Show do
   @impl true
   def handle_info({:outage_deleted, _outage}, socket) do
     {:noreply,
-      socket
-      |> put_flash(:info, "This outage has been deleted.")
-      |> push_navigate(to: ~p"/outages")}
+     socket
+     |> put_flash(:info, "This outage has been deleted.")
+     |> push_navigate(to: ~p"/outages")}
   end
 
   @impl true

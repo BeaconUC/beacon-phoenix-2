@@ -14,7 +14,10 @@ defmodule BeaconWeb.OutageReportLive.Show do
           <.button navigate={~p"/outage_reports"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/outage_reports/#{@outage_report}/edit?return_to=show"}>
+          <.button
+            variant="primary"
+            navigate={~p"/outage_reports/#{@outage_report}/edit?return_to=show"}
+          >
             <.icon name="hero-pencil-square" /> Edit outage_report
           </.button>
         </:actions>
@@ -48,9 +51,9 @@ defmodule BeaconWeb.OutageReportLive.Show do
   @impl true
   def handle_info({:outage_report_deleted, _report}, socket) do
     {:noreply,
-      socket
-      |> put_flash(:info, "This report has been deleted.")
-      |> push_navigate(to: ~p"/outage_reports")}
+     socket
+     |> put_flash(:info, "This report has been deleted.")
+     |> push_navigate(to: ~p"/outage_reports")}
   end
 
   @impl true
