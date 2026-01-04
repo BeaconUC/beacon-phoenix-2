@@ -1,14 +1,31 @@
 {
-  "name": "assets",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "beacon",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "vite --open",
+    "start-local": "vite --config ../../vite.config.local.mjs",
+    "build": "vite build"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "maplibre-gl": "^5.15.0"
+    "deck.gl": "^9.2.0",
+    "live_svelte": "file:../deps/live_svelte",
+    "maplibre-gl": "^5.0.0",
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix_live_view": "file:../deps/phoenix_live_view",
+    "svelte-geolocation": "^1.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.2",
+    "esbuild-plugin-import-glob": "^0.1.1",
+    "esbuild-plugin-tailwindcss": "^2.1.0",
+    "esbuild-svelte": "^0.9.4",
+    "svelte": "^5.46.1",
+    "svelte-maplibre-gl": "^1.0.2",
+    "svelte-preprocess": "^6.0.3",
+    "typescript": "^5.9.3",
+    "vite": "^4.0.0"
   }
 }

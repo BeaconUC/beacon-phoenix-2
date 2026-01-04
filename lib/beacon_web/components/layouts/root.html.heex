@@ -8,6 +8,11 @@
       {assigns[:page_title]}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    
+    <link href='https://unpkg.com/maplibre-gl@5.0.0/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src='https://unpkg.com/maplibre-gl@5.0.0/dist/maplibre-gl.js'></script>
+    <script src="https://unpkg.com/deck.gl@9.2.0/dist.min.js"></script>
+
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
     </script>
     <script>
@@ -30,27 +35,20 @@
       })();
     </script>
   </head>
-  <body>
-    <ul class="menu menu-horizontal w-full relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+  <body class={["h-screen", "w-screen", assigns[:overflow_hidden] && "overflow-hidden"]}>
+    <nav class="fixed top-0 left-0 right-0 flex items-center justify-end w-full gap-4 px-4 border-b z-100 menu menu-horizontal sm:px-6 lg:px-8 backdrop-blur-lg">
       <%= if @current_scope do %>
-        <li>
-          {@current_scope.user.email}
-        </li>
-        <li>
-          <.link href={~p"/users/settings"}>Settings</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log-out"} method="delete">Log out</.link>
-        </li>
+        <li>{@current_scope.user.email}</li>
+        <li><.link href={~p"/users/settings"}>Settings</.link></li>
+        <li><.link href={~p"/users/log-out"} method="delete">Log out</.link></li>
       <% else %>
-        <li>
-          <.link href={~p"/users/register"}>Register</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log-in"}>Log in</.link>
-        </li>
+        <li><.link href={~p"/users/register"}>Register</.link></li>
+        <li><.link href={~p"/users/log-in"}>Log in</.link></li>
       <% end %>
-    </ul>
-    {@inner_content}
+    </nav>
+
+    <div class="h-full w-full pt-12">
+      {@inner_content}
+    </div>
   </body>
 </html>

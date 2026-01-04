@@ -135,4 +135,4 @@
   } else {
     this.topbar = topbar;
   }
-}.call(this, window, document));
+}.call(typeof window !== "undefined" ? window : this, window, document));

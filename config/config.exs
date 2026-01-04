@@ -24,8 +24,7 @@ config :beacon,
   ecto_repos: [Beacon.Repo],
   generators: [timestamp_type: :utc_datetime]
 
-config :beacon, Beacon.Repo,
-  types: Beacon.PostgresTypes
+config :beacon, Beacon.Repo, types: Beacon.PostgresTypes
 
 # Configure the endpoint
 config :beacon, BeaconWeb.Endpoint,
@@ -48,14 +47,14 @@ config :beacon, BeaconWeb.Endpoint,
 config :beacon, Beacon.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
-config :esbuild,
-  version: "0.25.4",
-  beacon: [
-    args:
-      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
-  ]
+# config :esbuild,
+#   version: "0.25.4",
+#   beacon: [
+#     args:
+#       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
+#     cd: Path.expand("../assets", __DIR__),
+#     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+#   ]
 
 # Configure tailwind (the version is required)
 config :tailwind,
@@ -79,3 +78,11 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+# Configure live_svelte
+config :live_svelte,
+  ssr: false
+
+# Enable NodeJS debug mode to see console.log output
+config :nodejs,
+  debug_mode: false

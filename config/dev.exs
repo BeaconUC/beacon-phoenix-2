@@ -22,13 +22,17 @@ config :beacon, BeaconWeb.Endpoint,
   # Bind to 0.0.0.0 to expose the server to the docker host machine.
   # This makes make the service accessible from any network interface.
   # Change to `ip: {127, 0, 0, 1}` to allow access only from the server machine.
-  http: [ip: {0, 0, 0, 0}, port: 4000],
+  http: [
+    ip: {0, 0, 0, 0},
+    port: 4000
+  ],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "OIEo04rAQHwjNk5jKFrEiZxY74HNXdrCPH/yQlz0v5qoYCk1MadqCxVMqMVLG2PK",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:beacon, ~w(--sourcemap=inline --watch)]},
+    node: ["build.js", "--watch", "--reload", cd: Path.expand("../assets", __DIR__)],
+    # esbuild: {Esbuild, :install_and_run, [:beacon, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:beacon, ~w(--watch)]}
   ],
   pubsub_server: Beacon.PubSub

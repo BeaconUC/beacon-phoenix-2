@@ -17,7 +17,7 @@ defmodule BeaconWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt static)
 
   def router do
     quote do
@@ -86,6 +86,8 @@ defmodule BeaconWeb do
       import Phoenix.HTML
       # Core UI components
       import BeaconWeb.CoreComponents
+
+      import LiveSvelte
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS
