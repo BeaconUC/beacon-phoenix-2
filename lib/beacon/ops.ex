@@ -18,27 +18,35 @@ defmodule Beacon.Ops do
   @doc """
   Subscribes to scoped notifications about any outage changes.
   """
-  def subscribe_outage do
+  def subscribe_outage(%Scope{} = _scope) do
     Phoenix.PubSub.subscribe(Beacon.PubSub, @outage_topic)
   end
 
-  def subscribe_outage(id) do
+  def subscribe_outage(%Scope{} = _scope, id) do
     Phoenix.PubSub.subscribe(Beacon.PubSub, "#{@outage_topic}:#{id}")
   end
 
-  defp broadcast({:ok, outage}, event) when event in [:outage_created, :outage_updated, :outage_deleted] do
+  defp broadcast({:ok, outage}, event)
+       when event in [:outage_created, :outage_updated, :outage_deleted] do
     Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_topic, {event, outage})
     Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_topic}:#{outage.id}", {event, outage})
 
     {:ok, outage}
   end
 
-  defp broadcast({:ok, outage_report}, event) when event in [:outage_report_created, :outage_report_updated, :outage_report_deleted] do
+  defp broadcast({:ok, outage_report}, event)
+       when event in [:outage_report_created, :outage_report_updated, :outage_report_deleted] do
     Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_report_topic, {event, outage_report})
-    Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_report_topic}:#{outage_report.id}", {event, outage_report})
+
+    Phoenix.PubSub.broadcast(
+      Beacon.PubSub,
+      "#{@outage_report_topic}:#{outage_report.id}",
+      {event, outage_report}
+    )
 
     {:ok, outage_report}
   end
+
   defp broadcast({:error, _} = error, _event), do: error
 
   @doc """
@@ -127,7 +135,8 @@ defmodule Beacon.Ops do
     {:error, :unauthorized}
   end
 
-  def resolve_outage(%Scope{role: role} = scope, %Outage{} = outage, attrs) when role in [:user, :admin, :crew] do
+  def resolve_outage(%Scope{role: role} = scope, %Outage{} = outage, attrs)
+      when role in [:user, :admin, :crew] do
     attrs =
       attrs
       |> Map.put("resolved_by", scope.profile.id)
@@ -230,6 +239,7 @@ defmodule Beacon.Ops do
       attrs
       |> Map.put("reported_by", scope.profile.id)
       |> Map.put("location", location)
+      |> IO.inspect(label: "attrs before insert")
 
     %OutageReport{}
     |> OutageReport.changeset(attrs)
@@ -331,7 +341,7 @@ defmodule Beacon.Ops do
       %Announcement{}
 
   """
-  def get_announcement!(%Scope{} = _scope, id), do: raise "TODO"
+  def get_announcement!(%Scope{} = _scope, id), do: raise("TODO")
 
   @doc """
   Creates a announcement.
@@ -425,7 +435,7 @@ defmodule Beacon.Ops do
       %Assignment{}
 
   """
-  def get_assignment!(%Scope{} = _scope, id), do: raise "TODO"
+  def get_assignment!(%Scope{} = _scope, id), do: raise("TODO")
 
   @doc """
   Creates a assignment.

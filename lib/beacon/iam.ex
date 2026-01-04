@@ -40,7 +40,7 @@ defmodule Beacon.Iam do
       %Profile{}
 
   """
-  def get_profile!(%Scope{} = _scope, id), do: raise "TODO"
+  def get_profile!(%Scope{} = _scope, id), do: raise("TODO")
 
   @doc """
   Creates a profile.

@@ -12,6 +12,7 @@ defmodule Beacon.Geo do
   alias Beacon.Geo.Barangay
   alias Beacon.Geo.Provider
   alias Beacon.Geo.Feeder
+  alias Beacon.Accounts.Scope
 
   @doc """
   Returns the list of regions.
@@ -107,8 +108,6 @@ defmodule Beacon.Geo do
     Region.changeset(region, attrs)
   end
 
-
-
   @doc """
   Returns the list of provinces.
 
@@ -202,8 +201,6 @@ defmodule Beacon.Geo do
   def change_province(%Province{} = province, attrs \\ %{}) do
     Province.changeset(province, attrs)
   end
-
-
 
   @doc """
   Returns the list of cities.
@@ -299,8 +296,6 @@ defmodule Beacon.Geo do
     City.changeset(city, attrs)
   end
 
-
-
   @doc """
   Returns the list of barangays.
 
@@ -394,8 +389,6 @@ defmodule Beacon.Geo do
   def change_barangay(%Barangay{} = barangay, attrs \\ %{}) do
     Barangay.changeset(barangay, attrs)
   end
-
-
 
   @doc """
   Returns the list of providers.
@@ -679,5 +672,21 @@ defmodule Beacon.Geo do
   """
   def change_barangay_feeder(%BarangayFeeder{} = barangay_feeder, attrs \\ %{}) do
     BarangayFeeder.changeset(barangay_feeder, attrs)
+  end
+
+  def get_barangay_by_location(%Scope{} = _scope, lat, lng) do
+    query =
+      from b in Barangay,
+        where:
+          fragment(
+            "ST_Covers(?, ST_SetSRID(ST_MakePoint(?, ?), 4326))",
+            b.boundary,
+            ^lng,
+            ^lat
+          ),
+        select: b.name,
+        limit: 1
+
+    Repo.one(query)
   end
 end
