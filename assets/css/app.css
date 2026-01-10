@@ -1,14 +1,23 @@
 /* See the Tailwind configuration guide for advanced usage
    https://tailwindcss.com/docs/configuration */
 
-@import "tailwindcss" source(none);
-@source "../css";
+@import "tailwindcss";
+/* @source "../css";
 @source "../js";
-@source "../../lib/beacon_web";
+@source "../../lib/beacon_web"; */
+
+@source "../js/**/*.js";
+@source "../../lib/beacon_web/**/*.ex";
+@source "../../lib/beacon_web/**/*.html.heex";
+@source "../vue/**/*.vue";
+@source "../../lib/**/*.vue";
+
+@plugin "@tailwindcss/forms";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
-@plugin "../vendor/heroicons";
+/* @plugin "../vendor/heroicons"; */
+@plugin "./heroicons.plugin.js";
 
 /* daisyUI Tailwind Plugin. You can update this file by fetching the latest version with:
    curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js

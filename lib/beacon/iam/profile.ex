@@ -1,7 +1,7 @@
 defmodule Beacon.Iam.Profile do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "iam"
 
@@ -56,7 +56,7 @@ defmodule Beacon.Iam.Profile do
         changeset
 
       is_binary(first) and is_binary(last) and
-          String.trim(first) != "" and
+        String.trim(first) != "" and
           String.trim(last) != "" ->
         changeset
 

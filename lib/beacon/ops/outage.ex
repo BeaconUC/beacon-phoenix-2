@@ -1,20 +1,18 @@
 defmodule Beacon.Ops.Outage do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
 
   schema "outages" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
 
-    field :outage_type, Ecto.Enum,
-      values: Enum.outage_type_values()
+    field :outage_type, Ecto.Enum, values: Enum.outage_type_values()
 
-    field :status, Ecto.Enum,
-      values: Enum.outage_status_values()
+    field :status, Ecto.Enum, values: Enum.outage_status_values()
 
-    field :confidence_percentage, :float
+    field :confidence_percentage, :float, default: 100.0
 
     field :title, :string
     field :description, :string
@@ -44,40 +42,39 @@ defmodule Beacon.Ops.Outage do
   end
 
   @required_fields [
-    :public_id,
-    :provider_id,
-    :number_of_reports,
-    :estimated_affected_population,
-    :created_by_id,
-    :updated_by_id
-  ]
-  @optional_fields [
     :outage_type,
     :status,
-    :confidence_percentage,
     :title,
     :description,
-    :start_time,
+    :start_time
+  ]
+  @optional_fields [
     :estimated_restoration_time,
     :actual_restoration_time,
-    :confirmed_by_id,
-    :resolved_by_id
+    :confirmed_by,
+    :resolved_by,
+    :provider_id,
+    :created_by,
+    :updated_by
   ]
   def changeset(outage, attrs) do
     outage
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> validate_number(:confidence_percentage, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)
+    |> validate_number(:confidence_percentage,
+      greater_than_or_equal_to: 0.0,
+      less_than_or_equal_to: 100.0
+    )
     |> validate_number(:number_of_reports, greater_than_or_equal_to: 0)
     |> validate_number(:estimated_affected_population, greater_than_or_equal_to: 0)
     |> validate_length(:title, max: Constant.varchar_max_length())
     |> validate_length(:description, max: Constant.text_max_length())
     |> validate_restoration_timelines()
     |> foreign_key_constraint(:provider_id)
-    |> foreign_key_constraint(:created_by_id)
-    |> foreign_key_constraint(:updated_by_id)
-    |> foreign_key_constraint(:confirmed_by_id)
-    |> foreign_key_constraint(:resolved_by_id)
+    |> foreign_key_constraint(:created_by)
+    |> foreign_key_constraint(:updated_by)
+    |> foreign_key_constraint(:confirmed_by)
+    |> foreign_key_constraint(:resolved_by)
     |> unique_constraint(:public_id, name: :outages_public_id_idx)
   end
 

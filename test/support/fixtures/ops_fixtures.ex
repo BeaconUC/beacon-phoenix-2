@@ -9,9 +9,7 @@ defmodule Beacon.OpsFixtures do
   """
   def outage_fixture(scope, attrs \\ %{}) do
     attrs =
-      Enum.into(attrs, %{
-
-      })
+      Enum.into(attrs, %{})
 
     {:ok, outage} = Beacon.Ops.create_outage(scope, attrs)
     outage
@@ -22,9 +20,7 @@ defmodule Beacon.OpsFixtures do
   """
   def outage_report_fixture(scope, attrs \\ %{}) do
     attrs =
-      Enum.into(attrs, %{
-
-      })
+      Enum.into(attrs, %{})
 
     {:ok, outage_report} = Beacon.Ops.create_outage_report(scope, attrs)
     outage_report
@@ -35,9 +31,7 @@ defmodule Beacon.OpsFixtures do
   """
   def announcement_fixture(scope, attrs \\ %{}) do
     attrs =
-      Enum.into(attrs, %{
-
-      })
+      Enum.into(attrs, %{})
 
     {:ok, announcement} = Beacon.Ops.create_announcement(scope, attrs)
     announcement
@@ -48,9 +42,7 @@ defmodule Beacon.OpsFixtures do
   """
   def assignment_fixture(scope, attrs \\ %{}) do
     attrs =
-      Enum.into(attrs, %{
-
-      })
+      Enum.into(attrs, %{})
 
     {:ok, assignment} = Beacon.Ops.create_assignment(scope, attrs)
     assignment

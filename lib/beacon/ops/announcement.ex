@@ -23,7 +23,7 @@ defmodule Beacon.Ops.Announcement do
     timestamps()
   end
 
-   @required_fields [
+  @required_fields [
     :public_id,
     :title,
     :description,

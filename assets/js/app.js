@@ -22,24 +22,36 @@ import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
-import {hooks as colocatedHooks} from "phoenix-colocated/beacon"
-import topbar from "../vendor/topbar"
+// import {hooks as colocatedHooks} from "phoenix-colocated/beacon"
+import topbar from "topbar"
 import { Geolocation } from "./hooks/Geolocation"
+
+import {getHooks} from "live_vue"
+import liveVueApp from "../vue"
+import "../css/app.css";
 
 const Hooks = {}
 Hooks.Geolocation = Geolocation
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
-  longPollFallbackMs: 2500,
+  // longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks, ...Hooks},
+  hooks: {
+    // ...colocatedHooks,
+    ...Hooks,
+    ...getHooks(liveVueApp)
+  },
 })
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
+window.addEventListener("beacon:auto-clear", (e) => {
+  let el = e.target;
+  setTimeout(() => liveSocket.execJS(el, el.getAttribute(e.detail.attr)), e.detail.timeout);
+});
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

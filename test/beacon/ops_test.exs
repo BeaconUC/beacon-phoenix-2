@@ -109,7 +109,10 @@ defmodule Beacon.OpsTest do
       outage_report = outage_report_fixture(scope)
       other_scope = user_scope_fixture()
       assert Ops.get_outage_report!(scope, outage_report.id) == outage_report
-      assert_raise Ecto.NoResultsError, fn -> Ops.get_outage_report!(other_scope, outage_report.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Ops.get_outage_report!(other_scope, outage_report.id)
+      end
     end
 
     test "create_outage_report/2 with valid data creates a outage_report" do
@@ -130,7 +133,8 @@ defmodule Beacon.OpsTest do
       outage_report = outage_report_fixture(scope)
       update_attrs = %{}
 
-      assert {:ok, %OutageReport{} = outage_report} = Ops.update_outage_report(scope, outage_report, update_attrs)
+      assert {:ok, %OutageReport{} = outage_report} =
+               Ops.update_outage_report(scope, outage_report, update_attrs)
     end
 
     test "update_outage_report/3 with invalid scope raises" do
@@ -146,7 +150,10 @@ defmodule Beacon.OpsTest do
     test "update_outage_report/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       outage_report = outage_report_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Ops.update_outage_report(scope, outage_report, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Ops.update_outage_report(scope, outage_report, @invalid_attrs)
+
       assert outage_report == Ops.get_outage_report!(scope, outage_report.id)
     end
 
@@ -193,7 +200,10 @@ defmodule Beacon.OpsTest do
       announcement = announcement_fixture(scope)
       other_scope = user_scope_fixture()
       assert Ops.get_announcement!(scope, announcement.id) == announcement
-      assert_raise Ecto.NoResultsError, fn -> Ops.get_announcement!(other_scope, announcement.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Ops.get_announcement!(other_scope, announcement.id)
+      end
     end
 
     test "create_announcement/2 with valid data creates a announcement" do
@@ -214,7 +224,8 @@ defmodule Beacon.OpsTest do
       announcement = announcement_fixture(scope)
       update_attrs = %{}
 
-      assert {:ok, %Announcement{} = announcement} = Ops.update_announcement(scope, announcement, update_attrs)
+      assert {:ok, %Announcement{} = announcement} =
+               Ops.update_announcement(scope, announcement, update_attrs)
     end
 
     test "update_announcement/3 with invalid scope raises" do
@@ -230,7 +241,10 @@ defmodule Beacon.OpsTest do
     test "update_announcement/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       announcement = announcement_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Ops.update_announcement(scope, announcement, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Ops.update_announcement(scope, announcement, @invalid_attrs)
+
       assert announcement == Ops.get_announcement!(scope, announcement.id)
     end
 
@@ -298,7 +312,8 @@ defmodule Beacon.OpsTest do
       assignment = assignment_fixture(scope)
       update_attrs = %{}
 
-      assert {:ok, %Assignment{} = assignment} = Ops.update_assignment(scope, assignment, update_attrs)
+      assert {:ok, %Assignment{} = assignment} =
+               Ops.update_assignment(scope, assignment, update_attrs)
     end
 
     test "update_assignment/3 with invalid scope raises" do
@@ -314,7 +329,10 @@ defmodule Beacon.OpsTest do
     test "update_assignment/3 with invalid data returns error changeset" do
       scope = user_scope_fixture()
       assignment = assignment_fixture(scope)
-      assert {:error, %Ecto.Changeset{}} = Ops.update_assignment(scope, assignment, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Ops.update_assignment(scope, assignment, @invalid_attrs)
+
       assert assignment == Ops.get_assignment!(scope, assignment.id)
     end
 

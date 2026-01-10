@@ -386,7 +386,10 @@ defmodule Beacon.Stats do
       %Ecto.Changeset{data: %PsaIncomeExpenditure{}}
 
   """
-  def change_psa_income_expenditure(%PsaIncomeExpenditure{} = psa_income_expenditure, attrs \\ %{}) do
+  def change_psa_income_expenditure(
+        %PsaIncomeExpenditure{} = psa_income_expenditure,
+        attrs \\ %{}
+      ) do
     PsaIncomeExpenditure.changeset(psa_income_expenditure, attrs)
   end
 
@@ -578,7 +581,10 @@ defmodule Beacon.Stats do
       %Ecto.Changeset{data: %PsaEconomicPerformance{}}
 
   """
-  def change_psa_economic_performance(%PsaEconomicPerformance{} = psa_economic_performance, attrs \\ %{}) do
+  def change_psa_economic_performance(
+        %PsaEconomicPerformance{} = psa_economic_performance,
+        attrs \\ %{}
+      ) do
     PsaEconomicPerformance.changeset(psa_economic_performance, attrs)
   end
 end

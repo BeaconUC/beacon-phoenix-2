@@ -13,13 +13,41 @@ defmodule Beacon.Ops do
   alias Beacon.Accounts.Scope
 
   @outage_report_topic "outage_reports"
+  @outage_topic "outages"
 
   @doc """
   Subscribes to scoped notifications about any outage changes.
   """
   def subscribe_outage(%Scope{} = _scope) do
-    raise "TODO"
+    Phoenix.PubSub.subscribe(Beacon.PubSub, @outage_topic)
   end
+
+  def subscribe_outage(%Scope{} = _scope, id) do
+    Phoenix.PubSub.subscribe(Beacon.PubSub, "#{@outage_topic}:#{id}")
+  end
+
+  defp broadcast({:ok, outage}, event)
+       when event in [:outage_created, :outage_updated, :outage_deleted] do
+    Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_topic, {event, outage})
+    Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_topic}:#{outage.id}", {event, outage})
+
+    {:ok, outage}
+  end
+
+  defp broadcast({:ok, outage_report}, event)
+       when event in [:outage_report_created, :outage_report_updated, :outage_report_deleted] do
+    Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_report_topic, {event, outage_report})
+
+    Phoenix.PubSub.broadcast(
+      Beacon.PubSub,
+      "#{@outage_report_topic}:#{outage_report.id}",
+      {event, outage_report}
+    )
+
+    {:ok, outage_report}
+  end
+
+  defp broadcast({:error, _} = error, _event), do: error
 
   @doc """
   Returns the list of outages.
@@ -31,7 +59,8 @@ defmodule Beacon.Ops do
 
   """
   def list_outages(%Scope{} = _scope) do
-    raise "TODO"
+    query = from o in Outage, order_by: [desc: o.updated_at], limit: 100
+    Repo.all(query)
   end
 
   @doc """
@@ -45,7 +74,9 @@ defmodule Beacon.Ops do
       %Outage{}
 
   """
-  def get_outage!(%Scope{} = _scope, id), do: raise "TODO"
+  def get_outage!(%Scope{} = _scope, id) do
+    Repo.get!(Outage, id)
+  end
 
   @doc """
   Creates a outage.
@@ -59,8 +90,22 @@ defmodule Beacon.Ops do
       {:error, ...}
 
   """
-  def create_outage(%Scope{} = _scope, attrs) do
-    raise "TODO"
+  def create_outage(%Scope{role: :user} = scope, attrs) do
+    attrs =
+      attrs
+      |> Map.put("created_by", scope.profile.id)
+      |> Map.put("confidence_percentage", 100.0)
+      |> Map.put("updated_by", scope.profile.id)
+      |> Map.put("provider_id", 1)
+
+    %Outage{}
+    |> Outage.changeset(attrs)
+    |> Repo.insert(returning: true)
+    |> broadcast(:outage_created)
+  end
+
+  def create_outage(%Scope{}, _attrs) do
+    {:error, :unauthorized}
   end
 
   @doc """
@@ -75,8 +120,32 @@ defmodule Beacon.Ops do
       {:error, ...}
 
   """
-  def update_outage(%Scope{} = _scope, %Outage{} = outage, attrs) do
-    raise "TODO"
+  def update_outage(%Scope{role: :user} = scope, %Outage{} = outage, attrs) do
+    attrs =
+      attrs
+      |> Map.put("updated_by", scope.profile.id)
+
+    outage
+    |> Outage.changeset(attrs)
+    |> Repo.update()
+    |> broadcast(:outage_updated)
+  end
+
+  def update_outage(%Scope{}, %Outage{}, _attrs) do
+    {:error, :unauthorized}
+  end
+
+  def resolve_outage(%Scope{role: role} = scope, %Outage{} = outage, attrs)
+      when role in [:user, :admin, :crew] do
+    attrs =
+      attrs
+      |> Map.put("resolved_by", scope.profile.id)
+      |> Map.put("updated_by", scope.profile.id)
+
+    outage
+    |> Outage.changeset(attrs)
+    |> Repo.update()
+    |> broadcast(:outage_resolved)
   end
 
   @doc """
@@ -91,8 +160,13 @@ defmodule Beacon.Ops do
       {:error, ...}
 
   """
-  def delete_outage(%Scope{} = _scope, %Outage{} = outage) do
-    raise "TODO"
+  def delete_outage(%Scope{role: :user} = _scope, %Outage{} = outage) do
+    Repo.delete(outage)
+    |> broadcast(:outage_deleted)
+  end
+
+  def delete_outage(%Scope{}, %Outage{}) do
+    {:error, :unauthorized}
   end
 
   @doc """
@@ -104,28 +178,20 @@ defmodule Beacon.Ops do
       %Todo{...}
 
   """
-  def change_outage(%Scope{} = _scope, %Outage{} = outage, _attrs \\ %{}) do
-    raise "TODO"
+  def change_outage(%Scope{} = _scope, %Outage{} = outage, attrs \\ %{}) do
+    Outage.changeset(outage, attrs)
   end
 
   @doc """
   Subscribes to scoped notifications about any outage_report changes.
   """
-  def subscribe_outage_report do
+  def subscribe_outage_reports(%Scope{} = _scope) do
     Phoenix.PubSub.subscribe(Beacon.PubSub, @outage_report_topic)
   end
 
-  def subscribe_outage_report(id) do
+  def subscribe_outage_reports(%Scope{} = _scope, id) do
     Phoenix.PubSub.subscribe(Beacon.PubSub, "#{@outage_report_topic}:#{id}")
   end
-
-  defp broadcast({:ok, outage_report}, event) do
-    Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_report_topic, {event, outage_report})
-    Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_report_topic}:#{outage_report.id}", {event, outage_report})
-
-    {:ok, outage_report}
-  end
-  defp broadcast({:error, _} = error, _event), do: error
 
   @doc """
   Returns the list of outage_reports.
@@ -136,7 +202,7 @@ defmodule Beacon.Ops do
       [%OutageReport{}, ...]
 
   """
-  def list_outage_reports do
+  def list_outage_reports(%Scope{} = _scope) do
     query = from o in OutageReport, order_by: [desc: o.updated_at], limit: 100
     Repo.all(query)
   end
@@ -152,7 +218,7 @@ defmodule Beacon.Ops do
       %OutageReport{}
 
   """
-  def get_outage_report!(id) do
+  def get_outage_report!(%Scope{} = _scope, id) do
     Repo.get!(OutageReport, id)
   end
 
@@ -173,6 +239,7 @@ defmodule Beacon.Ops do
       attrs
       |> Map.put("reported_by", scope.profile.id)
       |> Map.put("location", location)
+      |> IO.inspect(label: "attrs before insert")
 
     %OutageReport{}
     |> OutageReport.changeset(attrs)
@@ -192,21 +259,9 @@ defmodule Beacon.Ops do
       {:error, ...}
 
   """
-  # def update_outage_report(%Scope{user: user}, %OutageReport{} = outage_report, attrs) do
-  #   cond do
-  #     outage_report.reported_by == user.id ->
-  #       outage_report
-  #       |> OutageReport.changeset(attrs)
-  #       |> Repo.update()
-
-  #     true ->
-  #       {:error, :unauthorized}
-  #   end
-  # end
-
   def update_outage_report(%Scope{} = scope, %OutageReport{} = outage_report, attrs) do
     is_admin = scope.role == :admin
-    is_owner = scope.user && outage_report.reported_by == scope.user.profile.id
+    is_owner = scope.user && outage_report.reported_by == scope.profile.id
 
     if is_admin or is_owner do
       outage_report
@@ -232,7 +287,7 @@ defmodule Beacon.Ops do
   """
   def delete_outage_report(%Scope{} = scope, %OutageReport{} = outage_report) do
     is_admin = scope.role == :admin
-    is_owner = scope.user && outage_report.reported_by == scope.user.profile.id
+    is_owner = scope.user && outage_report.reported_by == scope.profile.id
 
     if is_admin or is_owner do
       Repo.delete(outage_report)
@@ -251,7 +306,7 @@ defmodule Beacon.Ops do
       %Todo{...}
 
   """
-  def change_outage_report(%OutageReport{} = outage_report, attrs \\ %{}) do
+  def change_outage_report(%Scope{} = _scope, %OutageReport{} = outage_report, attrs \\ %{}) do
     OutageReport.changeset(outage_report, attrs)
   end
 
@@ -286,7 +341,7 @@ defmodule Beacon.Ops do
       %Announcement{}
 
   """
-  def get_announcement!(%Scope{} = _scope, id), do: raise "TODO"
+  def get_announcement!(%Scope{} = _scope, id), do: raise("TODO")
 
   @doc """
   Creates a announcement.
@@ -380,7 +435,7 @@ defmodule Beacon.Ops do
       %Assignment{}
 
   """
-  def get_assignment!(%Scope{} = _scope, id), do: raise "TODO"
+  def get_assignment!(%Scope{} = _scope, id), do: raise("TODO")
 
   @doc """
   Creates a assignment.

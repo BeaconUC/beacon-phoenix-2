@@ -17,7 +17,7 @@ defmodule BeaconWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt static)
 
   def router do
     quote do
@@ -87,6 +87,9 @@ defmodule BeaconWeb do
       # Core UI components
       import BeaconWeb.CoreComponents
 
+      use LiveVue
+      use LiveVue.Components, vue_root: ["./assets/vue", "./lib/my_app_web"]
+
       # Common modules used in templates
       alias Phoenix.LiveView.JS
       alias BeaconWeb.Layouts
@@ -110,5 +113,25 @@ defmodule BeaconWeb do
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
+  end
+end
+
+defimpl LiveVue.Encoder, for: Geo.Point do
+  def encode(point, _opts) do
+    %{
+      # Tuple.to_list converts {120.3, 14.5} into [120.3, 14.5]
+      # This makes it JSON-compatible
+      coordinates: Tuple.to_list(point.coordinates),
+      srid: point.srid
+    }
+  end
+end
+
+defimpl LiveVue.Encoder, for: Geo.MultiPoint do
+  def encode(multi_point, _opts) do
+    %{
+      coordinates: Enum.map(multi_point.coordinates, &Tuple.to_list/1),
+      srid: multi_point.srid
+    }
   end
 end

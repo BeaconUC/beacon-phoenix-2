@@ -1,9 +1,10 @@
 defmodule Beacon.Ops.OutageReport do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
+  @derive {LiveVue.Encoder, only: [:id, :public_id, :description, :status, :created_at, :location]}
 
   schema "outage_reports" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
@@ -21,9 +22,7 @@ defmodule Beacon.Ops.OutageReport do
     timestamps()
   end
 
-  @required_fields [
-
-  ]
+  @required_fields []
   @optional_fields [
     :status,
     :description,
@@ -47,5 +46,6 @@ defmodule Beacon.Ops.OutageReport do
   defp maybe_put_location(changeset, %{"location" => %Geo.Point{} = point}) do
     put_change(changeset, :location, point)
   end
+
   defp maybe_put_location(changeset, _), do: changeset
 end

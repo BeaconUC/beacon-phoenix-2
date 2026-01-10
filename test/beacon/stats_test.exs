@@ -23,7 +23,8 @@ defmodule Beacon.StatsTest do
     test "create_weather_observation/1 with valid data creates a weather_observation" do
       valid_attrs = %{}
 
-      assert {:ok, %WeatherObservation{} = weather_observation} = Stats.create_weather_observation(valid_attrs)
+      assert {:ok, %WeatherObservation{} = weather_observation} =
+               Stats.create_weather_observation(valid_attrs)
     end
 
     test "create_weather_observation/1 with invalid data returns error changeset" do
@@ -34,19 +35,26 @@ defmodule Beacon.StatsTest do
       weather_observation = weather_observation_fixture()
       update_attrs = %{}
 
-      assert {:ok, %WeatherObservation{} = weather_observation} = Stats.update_weather_observation(weather_observation, update_attrs)
+      assert {:ok, %WeatherObservation{} = weather_observation} =
+               Stats.update_weather_observation(weather_observation, update_attrs)
     end
 
     test "update_weather_observation/2 with invalid data returns error changeset" do
       weather_observation = weather_observation_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stats.update_weather_observation(weather_observation, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stats.update_weather_observation(weather_observation, @invalid_attrs)
+
       assert weather_observation == Stats.get_weather_observation!(weather_observation.id)
     end
 
     test "delete_weather_observation/1 deletes the weather_observation" do
       weather_observation = weather_observation_fixture()
       assert {:ok, %WeatherObservation{}} = Stats.delete_weather_observation(weather_observation)
-      assert_raise Ecto.NoResultsError, fn -> Stats.get_weather_observation!(weather_observation.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Stats.get_weather_observation!(weather_observation.id)
+      end
     end
 
     test "change_weather_observation/1 returns a weather_observation changeset" do
@@ -75,7 +83,8 @@ defmodule Beacon.StatsTest do
     test "create_psa_population_stat/1 with valid data creates a psa_population_stat" do
       valid_attrs = %{}
 
-      assert {:ok, %PsaPopulationStat{} = psa_population_stat} = Stats.create_psa_population_stat(valid_attrs)
+      assert {:ok, %PsaPopulationStat{} = psa_population_stat} =
+               Stats.create_psa_population_stat(valid_attrs)
     end
 
     test "create_psa_population_stat/1 with invalid data returns error changeset" do
@@ -86,19 +95,26 @@ defmodule Beacon.StatsTest do
       psa_population_stat = psa_population_stat_fixture()
       update_attrs = %{}
 
-      assert {:ok, %PsaPopulationStat{} = psa_population_stat} = Stats.update_psa_population_stat(psa_population_stat, update_attrs)
+      assert {:ok, %PsaPopulationStat{} = psa_population_stat} =
+               Stats.update_psa_population_stat(psa_population_stat, update_attrs)
     end
 
     test "update_psa_population_stat/2 with invalid data returns error changeset" do
       psa_population_stat = psa_population_stat_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stats.update_psa_population_stat(psa_population_stat, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stats.update_psa_population_stat(psa_population_stat, @invalid_attrs)
+
       assert psa_population_stat == Stats.get_psa_population_stat!(psa_population_stat.id)
     end
 
     test "delete_psa_population_stat/1 deletes the psa_population_stat" do
       psa_population_stat = psa_population_stat_fixture()
       assert {:ok, %PsaPopulationStat{}} = Stats.delete_psa_population_stat(psa_population_stat)
-      assert_raise Ecto.NoResultsError, fn -> Stats.get_psa_population_stat!(psa_population_stat.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Stats.get_psa_population_stat!(psa_population_stat.id)
+      end
     end
 
     test "change_psa_population_stat/1 returns a psa_population_stat changeset" do
@@ -127,7 +143,8 @@ defmodule Beacon.StatsTest do
     test "create_psa_poverty_stat/1 with valid data creates a psa_poverty_stat" do
       valid_attrs = %{}
 
-      assert {:ok, %PsaPovertyStat{} = psa_poverty_stat} = Stats.create_psa_poverty_stat(valid_attrs)
+      assert {:ok, %PsaPovertyStat{} = psa_poverty_stat} =
+               Stats.create_psa_poverty_stat(valid_attrs)
     end
 
     test "create_psa_poverty_stat/1 with invalid data returns error changeset" do
@@ -138,12 +155,16 @@ defmodule Beacon.StatsTest do
       psa_poverty_stat = psa_poverty_stat_fixture()
       update_attrs = %{}
 
-      assert {:ok, %PsaPovertyStat{} = psa_poverty_stat} = Stats.update_psa_poverty_stat(psa_poverty_stat, update_attrs)
+      assert {:ok, %PsaPovertyStat{} = psa_poverty_stat} =
+               Stats.update_psa_poverty_stat(psa_poverty_stat, update_attrs)
     end
 
     test "update_psa_poverty_stat/2 with invalid data returns error changeset" do
       psa_poverty_stat = psa_poverty_stat_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stats.update_psa_poverty_stat(psa_poverty_stat, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stats.update_psa_poverty_stat(psa_poverty_stat, @invalid_attrs)
+
       assert psa_poverty_stat == Stats.get_psa_poverty_stat!(psa_poverty_stat.id)
     end
 
@@ -173,13 +194,16 @@ defmodule Beacon.StatsTest do
 
     test "get_psa_income_expenditure!/1 returns the psa_income_expenditure with given id" do
       psa_income_expenditure = psa_income_expenditure_fixture()
-      assert Stats.get_psa_income_expenditure!(psa_income_expenditure.id) == psa_income_expenditure
+
+      assert Stats.get_psa_income_expenditure!(psa_income_expenditure.id) ==
+               psa_income_expenditure
     end
 
     test "create_psa_income_expenditure/1 with valid data creates a psa_income_expenditure" do
       valid_attrs = %{}
 
-      assert {:ok, %PsaIncomeExpenditure{} = psa_income_expenditure} = Stats.create_psa_income_expenditure(valid_attrs)
+      assert {:ok, %PsaIncomeExpenditure{} = psa_income_expenditure} =
+               Stats.create_psa_income_expenditure(valid_attrs)
     end
 
     test "create_psa_income_expenditure/1 with invalid data returns error changeset" do
@@ -190,19 +214,29 @@ defmodule Beacon.StatsTest do
       psa_income_expenditure = psa_income_expenditure_fixture()
       update_attrs = %{}
 
-      assert {:ok, %PsaIncomeExpenditure{} = psa_income_expenditure} = Stats.update_psa_income_expenditure(psa_income_expenditure, update_attrs)
+      assert {:ok, %PsaIncomeExpenditure{} = psa_income_expenditure} =
+               Stats.update_psa_income_expenditure(psa_income_expenditure, update_attrs)
     end
 
     test "update_psa_income_expenditure/2 with invalid data returns error changeset" do
       psa_income_expenditure = psa_income_expenditure_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stats.update_psa_income_expenditure(psa_income_expenditure, @invalid_attrs)
-      assert psa_income_expenditure == Stats.get_psa_income_expenditure!(psa_income_expenditure.id)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stats.update_psa_income_expenditure(psa_income_expenditure, @invalid_attrs)
+
+      assert psa_income_expenditure ==
+               Stats.get_psa_income_expenditure!(psa_income_expenditure.id)
     end
 
     test "delete_psa_income_expenditure/1 deletes the psa_income_expenditure" do
       psa_income_expenditure = psa_income_expenditure_fixture()
-      assert {:ok, %PsaIncomeExpenditure{}} = Stats.delete_psa_income_expenditure(psa_income_expenditure)
-      assert_raise Ecto.NoResultsError, fn -> Stats.get_psa_income_expenditure!(psa_income_expenditure.id) end
+
+      assert {:ok, %PsaIncomeExpenditure{}} =
+               Stats.delete_psa_income_expenditure(psa_income_expenditure)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Stats.get_psa_income_expenditure!(psa_income_expenditure.id)
+      end
     end
 
     test "change_psa_income_expenditure/1 returns a psa_income_expenditure changeset" do
@@ -242,12 +276,16 @@ defmodule Beacon.StatsTest do
       psa_price_index = psa_price_index_fixture()
       update_attrs = %{}
 
-      assert {:ok, %PsaPriceIndex{} = psa_price_index} = Stats.update_psa_price_index(psa_price_index, update_attrs)
+      assert {:ok, %PsaPriceIndex{} = psa_price_index} =
+               Stats.update_psa_price_index(psa_price_index, update_attrs)
     end
 
     test "update_psa_price_index/2 with invalid data returns error changeset" do
       psa_price_index = psa_price_index_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stats.update_psa_price_index(psa_price_index, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stats.update_psa_price_index(psa_price_index, @invalid_attrs)
+
       assert psa_price_index == Stats.get_psa_price_index!(psa_price_index.id)
     end
 
@@ -277,13 +315,16 @@ defmodule Beacon.StatsTest do
 
     test "get_psa_economic_performance!/1 returns the psa_economic_performance with given id" do
       psa_economic_performance = psa_economic_performance_fixture()
-      assert Stats.get_psa_economic_performance!(psa_economic_performance.id) == psa_economic_performance
+
+      assert Stats.get_psa_economic_performance!(psa_economic_performance.id) ==
+               psa_economic_performance
     end
 
     test "create_psa_economic_performance/1 with valid data creates a psa_economic_performance" do
       valid_attrs = %{}
 
-      assert {:ok, %PsaEconomicPerformance{} = psa_economic_performance} = Stats.create_psa_economic_performance(valid_attrs)
+      assert {:ok, %PsaEconomicPerformance{} = psa_economic_performance} =
+               Stats.create_psa_economic_performance(valid_attrs)
     end
 
     test "create_psa_economic_performance/1 with invalid data returns error changeset" do
@@ -294,19 +335,29 @@ defmodule Beacon.StatsTest do
       psa_economic_performance = psa_economic_performance_fixture()
       update_attrs = %{}
 
-      assert {:ok, %PsaEconomicPerformance{} = psa_economic_performance} = Stats.update_psa_economic_performance(psa_economic_performance, update_attrs)
+      assert {:ok, %PsaEconomicPerformance{} = psa_economic_performance} =
+               Stats.update_psa_economic_performance(psa_economic_performance, update_attrs)
     end
 
     test "update_psa_economic_performance/2 with invalid data returns error changeset" do
       psa_economic_performance = psa_economic_performance_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stats.update_psa_economic_performance(psa_economic_performance, @invalid_attrs)
-      assert psa_economic_performance == Stats.get_psa_economic_performance!(psa_economic_performance.id)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stats.update_psa_economic_performance(psa_economic_performance, @invalid_attrs)
+
+      assert psa_economic_performance ==
+               Stats.get_psa_economic_performance!(psa_economic_performance.id)
     end
 
     test "delete_psa_economic_performance/1 deletes the psa_economic_performance" do
       psa_economic_performance = psa_economic_performance_fixture()
-      assert {:ok, %PsaEconomicPerformance{}} = Stats.delete_psa_economic_performance(psa_economic_performance)
-      assert_raise Ecto.NoResultsError, fn -> Stats.get_psa_economic_performance!(psa_economic_performance.id) end
+
+      assert {:ok, %PsaEconomicPerformance{}} =
+               Stats.delete_psa_economic_performance(psa_economic_performance)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Stats.get_psa_economic_performance!(psa_economic_performance.id)
+      end
     end
 
     test "change_psa_economic_performance/1 returns a psa_economic_performance changeset" do

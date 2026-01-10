@@ -1,18 +1,16 @@
 defmodule Beacon.Ops.OutageUpdate do
   use Beacon.Schema
   import Ecto.Changeset
-  alias Beacon.{ Constant, Enum }
+  alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
 
   schema "outage_updates" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
 
-    field :old_status, Ecto.Enum,
-      values: Enum.outage_status_values()
+    field :old_status, Ecto.Enum, values: Enum.outage_status_values()
 
-    field :new_status, Ecto.Enum,
-      values: Enum.outage_status_values()
+    field :new_status, Ecto.Enum, values: Enum.outage_status_values()
 
     field :description, :string
 

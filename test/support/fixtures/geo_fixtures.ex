@@ -10,9 +10,7 @@ defmodule Beacon.GeoFixtures do
   def region_fixture(attrs \\ %{}) do
     {:ok, region} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_region()
 
     region
@@ -24,9 +22,7 @@ defmodule Beacon.GeoFixtures do
   def province_fixture(attrs \\ %{}) do
     {:ok, province} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_province()
 
     province
@@ -38,9 +34,7 @@ defmodule Beacon.GeoFixtures do
   def city_fixture(attrs \\ %{}) do
     {:ok, city} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_city()
 
     city
@@ -52,9 +46,7 @@ defmodule Beacon.GeoFixtures do
   def barangay_fixture(attrs \\ %{}) do
     {:ok, barangay} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_barangay()
 
     barangay
@@ -66,9 +58,7 @@ defmodule Beacon.GeoFixtures do
   def provider_fixture(attrs \\ %{}) do
     {:ok, provider} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_provider()
 
     provider
@@ -80,9 +70,7 @@ defmodule Beacon.GeoFixtures do
   def feeder_fixture(attrs \\ %{}) do
     {:ok, feeder} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_feeder()
 
     feeder
@@ -94,9 +82,7 @@ defmodule Beacon.GeoFixtures do
   def barangay_feeder_fixture(attrs \\ %{}) do
     {:ok, barangay_feeder} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Beacon.Geo.create_barangay_feeder()
 
     barangay_feeder

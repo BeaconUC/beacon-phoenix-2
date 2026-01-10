@@ -78,7 +78,10 @@ defmodule BeaconWeb.OutageReportLiveTest do
     test "deletes outage_report in listing", %{conn: conn, outage_report: outage_report} do
       {:ok, index_live, _html} = live(conn, ~p"/outage_reports")
 
-      assert index_live |> element("#outage_reports-#{outage_report.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#outage_reports-#{outage_report.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#outage_reports-#{outage_report.id}")
     end
   end

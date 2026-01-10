@@ -6,17 +6,17 @@ defmodule BeaconWeb.OutageReportLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
-      <.header>
+    <Layouts.admin_list flash={@flash} current_scope={@current_scope}>
+      <%!-- <.header>
         Listing Outage reports
         <:actions>
           <.button variant="primary" navigate={~p"/outage_reports/new"}>
             <.icon name="hero-plus" /> New Outage report
           </.button>
         </:actions>
-      </.header>
+      </.header> --%>
 
-      <.table
+      <%!-- <.table
         id="outage_reports"
         rows={@streams.outage_reports}
         row_click={fn {_id, outage_report} -> JS.navigate(~p"/outage_reports/#{outage_report}") end}
@@ -37,44 +37,126 @@ defmodule BeaconWeb.OutageReportLive.Index do
             Delete
           </.link>
         </:action>
-      </.table>
-    </Layouts.app>
+      </.table> --%>
+      <.vue
+        v-component="OutageReport"
+        v-socket={@socket}
+        reports={@outage_reports}
+        form={@form}
+        v-ssr={false}
+        class="h-full"
+      />
+    </Layouts.admin_list>
     """
   end
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: Ops.subscribe_outage_report()
+    if connected?(socket) do
+      Ops.subscribe_outage_reports(socket.assigns.current_scope)
+    end
+
+    initial_form =
+      Ops.change_outage_report(socket.assigns.current_scope, %Beacon.Ops.OutageReport{})
+      |> to_form(as: :outage_report)
 
     {:ok,
-     socket
-     |> assign(:page_title, "Listing Outage reports")
-     |> stream(:outage_reports, list_outage_reports())}
+      socket
+      |> assign(:page_title, "Listing Outage reports")
+      |> assign(:outage_reports, list_outage_reports(socket.assigns.current_scope))
+      |> assign(:form, initial_form)
+    }
+  end
+
+  # @impl true
+  # def mount(_params, _session, socket) do
+  #   if connected?(socket) do
+  #     Ops.subscribe_outage_reports(socket.assigns.current_scope)
+  #   end
+
+  #   {:ok,
+  #     socket
+  #     |> assign(:page_title, "Listing Outage reports")
+  #     |> stream(:outage_reports, list_outage_reports(socket.assigns.current_scope))}
+  # end
+
+  @impl true
+  def handle_event("edit_row", %{"id" => id}, socket) do
+    report = Ops.get_outage_report!(socket.assigns.current_scope, id)
+    form = Ops.change_outage_report(socket.assigns.current_scope, report)
+            |> to_form(as: :outage_report)
+    {:noreply, assign(socket, form: form)}
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    outage_report = Ops.get_outage_report!(id)
+    outage_report = Ops.get_outage_report!(socket.assigns.current_scope, id)
 
     case Ops.delete_outage_report(socket.assigns.current_scope, outage_report) do
       {:ok, _outage_report} ->
-        {:noreply, stream_delete(socket, :outage_reports, outage_report)}
+        {:noreply,
+        socket
+        |> put_flash(:info, "Outage report deleted successfully.")
+        |> assign(:outage_reports, list_outage_reports(socket.assigns.current_scope))}
 
       {:error, :unauthorized} ->
-        {:noreply, put_flash(socket, :error, "You are not authorized to delete this report.")}
+        {:noreply,
+        put_flash(socket, :error, "You are not authorized to delete this outage report.")}
     end
   end
 
-  defp list_outage_reports() do
-    Ops.list_outage_reports()
-  end
+  @impl true
+  def handle_event("validate", %{"outage_report" => params}, socket) do
+    report = Ops.get_outage_report!(socket.assigns.current_scope, params["id"])
 
-  def handle_info({:outage_report_deleted, msg}, socket) do
-    {:noreply, stream_delete(socket, :outage_reports, msg)}
+    form =
+      Ops.change_outage_report(socket.assigns.current_scope, report, params)
+      |> Map.put(:action, :validate)
+      |> to_form(as: :outage_report)
+
+    {:noreply, assign(socket, form: form)}
   end
 
   @impl true
-  def handle_info({_event, msg}, socket) do
-    {:noreply, stream_insert(socket, :outage_reports, msg, at: 0)}
+  def handle_event("save", %{"outage_report" => params}, socket) do
+    report = Ops.get_outage_report!(socket.assigns.current_scope, params["id"])
+
+    case Ops.update_outage_report(socket.assigns.current_scope, report, params) do
+      {:ok, _updated} ->
+        blank_form =
+          Ops.change_outage_report(socket.assigns.current_scope, %Beacon.Ops.OutageReport{})
+          |> to_form(as: :outage_report)
+
+        {:noreply,
+          socket
+          |> put_flash(:info, "Report updated")
+          |> assign(form: blank_form, outage_reports: list_outage_reports(socket.assigns.current_scope))}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset, as: :outage_report))}
+    end
+  end
+
+  defp list_outage_reports(current_scope) do
+    Ops.list_outage_reports(current_scope)
+  end
+
+  # def handle_info({:outage_report_deleted, outage_report}, socket) do
+  #   {:noreply, stream_delete(socket, :outage_reports, outage_report)}
+  # end
+
+  # @impl true
+  # def handle_info({_event, outage_report}, socket) do
+  #   {:noreply, stream_insert(socket, :outage_reports, outage_report, at: 0)}
+  # end
+
+  # @impl true
+  # def handle_info({:outage_report_deleted, _report}, socket) do
+  #   {:noreply, assign(socket, :outage_reports, list_outage_reports(socket.assigns.current_scope))}
+  # end
+
+  @impl true
+  def handle_info({_event, _report}, socket) do
+    {:noreply, assign(socket, :outage_reports, list_outage_reports(socket.assigns.current_scope))}
   end
 end

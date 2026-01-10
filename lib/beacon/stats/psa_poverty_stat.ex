@@ -43,9 +43,18 @@ defmodule Beacon.Stats.PsaPovertyStat do
     |> validate_number(:year, greater_than_or_equal_to: Constant.psa_min_year())
     |> validate_number(:poverty_threshold_per_capita, greater_than_or_equal_to: 0)
     |> validate_number(:food_threshold_per_capita, greater_than_or_equal_to: 0)
-    |> validate_number(:poverty_incidence_families, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)
-    |> validate_number(:poverty_incidence_population, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)
-    |> validate_number(:subsistence_incidence_population, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0)
+    |> validate_number(:poverty_incidence_families,
+      greater_than_or_equal_to: 0.0,
+      less_than_or_equal_to: 100.0
+    )
+    |> validate_number(:poverty_incidence_population,
+      greater_than_or_equal_to: 0.0,
+      less_than_or_equal_to: 100.0
+    )
+    |> validate_number(:subsistence_incidence_population,
+      greater_than_or_equal_to: 0.0,
+      less_than_or_equal_to: 100.0
+    )
     |> validate_number(:magnitude_poor_families, greater_than_or_equal_to: 0)
     |> validate_number(:magnitude_poor_population, greater_than_or_equal_to: 0)
     |> validate_threshold_logic()
