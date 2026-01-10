@@ -16,8 +16,7 @@ defmodule BeaconWeb.OutageReportLive.Form do
       <.form for={@form} id="outage_report-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:description]} type="text" label="Description" />
 
-        <%!-- 1. Status: Only visible for admins --%>
-        <div :if={@profile.role == :admin}>
+        <div :if={@current_scope.profile.role == :admin}>
           <.input
             field={@form[:status]}
             type="select"
@@ -28,7 +27,7 @@ defmodule BeaconWeb.OutageReportLive.Form do
         </div>
 
         <%!-- 2. Geolocation: Only visible when creating (:new) --%>
-        <div :if={@live_action == :new} class="space-y-2 my-5">
+        <%!-- <div :if={@live_action == :new} class="space-y-2 my-5">
           <div class="flex items-center gap-4">
             <.input field={@form[:location]} type="hidden" />
 
@@ -38,7 +37,6 @@ defmodule BeaconWeb.OutageReportLive.Form do
               phx-hook="Geolocation"
               class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-white/10 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <%!-- SVG icons remain the same --%>
               <svg class="-ml-1 mr-2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -53,7 +51,7 @@ defmodule BeaconWeb.OutageReportLive.Form do
               Location captured
             </div>
           </div>
-        </div>
+        </div> --%>
 
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Outage report</.button>
@@ -165,15 +163,15 @@ defmodule BeaconWeb.OutageReportLive.Form do
     |> assign(:form, to_form(Ops.change_outage_report(socket.assigns.current_scope, outage_report)))
   end
 
-  @impl true
-  def handle_event("validate", %{"outage_report" => outage_report_params}, socket) do
-    changeset = Ops.change_outage_report(socket.assigns.current_scope, socket.assigns.outage_report, outage_report_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
-  end
+  # @impl true
+  # def handle_event("validate", %{"outage_report" => outage_report_params}, socket) do
+  #   changeset = Ops.change_outage_report(socket.assigns.current_scope, socket.assigns.outage_report, outage_report_params)
+  #   {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+  # end
 
-  def handle_event("save", %{"outage_report" => outage_report_params}, socket) do
-    save_outage_report(socket, socket.assigns.live_action, outage_report_params)
-  end
+  # def handle_event("save", %{"outage_report" => outage_report_params}, socket) do
+  #   save_outage_report(socket, socket.assigns.live_action, outage_report_params)
+  # end
 
   # def handle_event("set_location", %{"lat" => lat, "lng" => lng}, socket) do
   #   location = %Geo.Point{coordinates: {lng, lat}, srid: 4326}

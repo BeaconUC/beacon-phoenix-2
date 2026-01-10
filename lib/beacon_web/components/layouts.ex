@@ -79,6 +79,42 @@ defmodule BeaconWeb.Layouts do
     doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
 
   slot :inner_block, required: true
+  def admin_list(assigns) do
+    ~H"""
+    <div class="flex flex-col h-full overflow-hidden">
+      <header class="flex-none px-3 navbar sm:px-6 lg:px-8">
+        <div class="flex-1">
+          <a href="/" class="flex items-center flex-1 gap-2 w-fit">
+            <img src={~p"/images/logo.svg"} width="36" />
+            <span class="text-sm font-semibold">Beacon v{Application.spec(:beacon, :vsn)}</span>
+          </a>
+        </div>
+        <div class="flex-none">
+          <ul class="flex items-center px-1 space-x-4">
+            <li><a href="https://github.com/..." class="btn btn-ghost">GitHub</a></li>
+            <li><.theme_toggle /></li>
+          </ul>
+        </div>
+      </header>
+
+      <main class="flex-1 min-h-0 p-3 sm:px-6 lg:px-8">
+        <%!-- <div class="h-full"> --%>
+          {render_slot(@inner_block)}
+        <%!-- </div> --%>
+      </main>
+
+      <.flash_group flash={@flash} />
+    </div>
+    """
+  end
+
+  attr :flash, :map, required: true, doc: "the map of flash messages"
+
+  attr :current_scope, :map,
+    default: nil,
+    doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
+
+  slot :inner_block, required: true
 
   def map(assigns) do
     ~H"""
