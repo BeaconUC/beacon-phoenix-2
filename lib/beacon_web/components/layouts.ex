@@ -35,7 +35,7 @@ defmodule BeaconWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="px-4 navbar sm:px-6 lg:px-8">
+    <header class="px-3 navbar sm:px-6 lg:px-8">
       <div class="flex-1">
         <a href="/" class="flex items-center flex-1 gap-2 w-fit">
           <img src={~p"/images/logo.svg"} width="36" />
@@ -62,7 +62,7 @@ defmodule BeaconWeb.Layouts do
       </div>
     </header>
 
-    <main class="px-4 py-10 sm:px-6 lg:px-8">
+    <main class="p-3 sm:px-6 lg:px-8">
       <div class="mx-auto space-y-4">
         {render_slot(@inner_block)}
       </div>
@@ -118,7 +118,7 @@ defmodule BeaconWeb.Layouts do
 
   def map(assigns) do
     ~H"""
-    <main class="flex w-full h-full">
+    <main class="absolute inset-0 w-full h-full pt-12">
       {render_slot(@inner_block)}
     </main>
 
@@ -176,11 +176,16 @@ defmodule BeaconWeb.Layouts do
   """
   def theme_toggle(assigns) do
     ~H"""
-    <div class="relative flex flex-row items-center border-2 rounded-full card border-base-300 bg-base-300">
-      <div class="absolute w-1/3 h-full rounded-full border border-base-200 bg-base-100 brightness-200 left-0 in-data-[theme=light]:left-1/3 in-data-[theme=dark]:left-2/3 transition-[left]" />
+    <div class="relative flex flex-row items-center border-2 rounded-full card border-base-300 bg-base-300 w-24">
+      <div class="absolute w-1/3 h-full rounded-full border border-base-200 bg-base-100 brightness-110
+        left-0
+        in-data-[selected-theme=light]:left-1/3
+        in-data-[selected-theme=dark]:left-2/3
+        transition-[left] duration-200 ease-in-out"
+      />
 
       <button
-        class="flex w-1/3 p-2 cursor-pointer"
+        class="relative flex w-1/3 p-2 justify-center cursor-pointer z-10"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
       >
@@ -188,7 +193,7 @@ defmodule BeaconWeb.Layouts do
       </button>
 
       <button
-        class="flex w-1/3 p-2 cursor-pointer"
+        class="relative flex w-1/3 p-2 justify-center cursor-pointer z-10"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
       >
@@ -196,7 +201,7 @@ defmodule BeaconWeb.Layouts do
       </button>
 
       <button
-        class="flex w-1/3 p-2 cursor-pointer"
+        class="relative flex w-1/3 p-2 justify-center cursor-pointer z-10"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
       >
@@ -204,5 +209,5 @@ defmodule BeaconWeb.Layouts do
       </button>
     </div>
     """
-  end
+end
 end
