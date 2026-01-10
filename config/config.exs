@@ -47,26 +47,26 @@ config :beacon, BeaconWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :beacon, Beacon.Mailer, adapter: Swoosh.Adapters.Local
 
-# Configure esbuild (the version is required)
-config :esbuild,
-  version: "0.25.4",
-  beacon: [
-    args:
-      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
-  ]
+# # Configure esbuild (the version is required)
+# config :esbuild,
+#   version: "0.25.4",
+#   beacon: [
+#     args:
+#       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
+#     cd: Path.expand("../assets", __DIR__),
+#     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+#   ]
 
-# Configure tailwind (the version is required)
-config :tailwind,
-  version: "4.1.12",
-  beacon: [
-    args: ~w(
-      --input=assets/css/app.css
-      --output=priv/static/assets/css/app.css
-    ),
-    cd: Path.expand("..", __DIR__)
-  ]
+# # Configure tailwind (the version is required)
+# config :tailwind,
+#   version: "4.1.12",
+#   beacon: [
+#     args: ~w(
+#       --input=assets/css/app.css
+#       --output=priv/static/assets/css/app.css
+#     ),
+#     cd: Path.expand("..", __DIR__)
+#   ]
 
 # Configure Elixir's Logger
 config :logger, :default_formatter,
@@ -75,6 +75,8 @@ config :logger, :default_formatter,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :phoenix_live_view, :debug_heex_output, true
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

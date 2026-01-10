@@ -28,8 +28,9 @@ config :beacon, BeaconWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "OIEo04rAQHwjNk5jKFrEiZxY74HNXdrCPH/yQlz0v5qoYCk1MadqCxVMqMVLG2PK",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:beacon, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:beacon, ~w(--watch)]}
+    # esbuild: {Esbuild, :install_and_run, [:beacon, ~w(--sourcemap=inline --watch)]},
+    # tailwind: {Tailwind, :install_and_run, [:beacon, ~w(--watch)]}
+    npm: ["--silent", "run", "dev", cd: Path.expand("../assets", __DIR__)]
   ],
   pubsub_server: Beacon.PubSub
 
@@ -60,6 +61,12 @@ config :beacon, BeaconWeb.Endpoint,
 config :beacon, BeaconWeb.Endpoint,
   live_reload: [
     web_console_logger: true,
+    notify: [
+        live_view: [
+          ~r"lib/my_app_web/core_components.ex$",
+          ~r"lib/my_app_web/(live|components)/.*(ex|heex)$"
+      ]
+    ],
     patterns: [
       # Static assets, except user uploads
       ~r"priv/static/(?!uploads/).*\.(js|css|png|jpeg|jpg|gif|svg)$"E,
@@ -67,7 +74,10 @@ config :beacon, BeaconWeb.Endpoint,
       ~r"priv/gettext/.*\.po$"E,
       # Router, Controllers, LiveViews and LiveComponents
       ~r"lib/beacon_web/router\.ex$"E,
-      ~r"lib/beacon_web/(controllers|live|components)/.*\.(ex|heex)$"E
+      ~r"lib/beacon_web/(controllers|live|components)/.*\.(ex|heex)$"E,
+      # Vue
+      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"lib/my_app_web/controllers/.*(ex|heex)$"
     ]
   ]
 
@@ -94,3 +104,9 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :live_vue,
+  vite_host: "https://beacon.jmcodes.com:8443",
+  ssr_module: LiveVue.SSR.ViteJS,
+  # if you want to disable SSR by default, set this to false
+  ssr: true

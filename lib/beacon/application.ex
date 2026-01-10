@@ -8,6 +8,7 @@ defmodule Beacon.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      {NodeJS.Supervisor, [path: LiveVue.SSR.NodeJS.server_path(), pool_size: 4]},
       BeaconWeb.Telemetry,
       Beacon.Repo,
       {DNSCluster, query: Application.get_env(:beacon, :dns_cluster_query) || :ignore},

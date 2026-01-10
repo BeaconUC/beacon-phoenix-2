@@ -1,14 +1,40 @@
 {
-  "name": "assets",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite --host -l warn",
+    "lint": "vue-tsc --noEmit",
+    "build": "vite build",
+    "build-server": "vite build --ssr js/server.js --out-dir ../priv/vue --minify esbuild --ssrManifest && echo '{\"type\": \"module\" } ' > ../priv/vue/package.json"
   },
-  "author": "",
-  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/vite": "^4.1.11",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "postcss": "^8.5.6",
+    "sass-embedded": "^1.97.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.9",
+    "vue-tsc": "^2.0.13"
+  },
   "dependencies": {
-    "maplibre-gl": "^5.15.0"
+    "@deck.gl/aggregation-layers": "^9.2.5",
+    "@deck.gl/core": "^9.2.5",
+    "@deck.gl/geo-layers": "^9.2.5",
+    "@deck.gl/layers": "^9.2.5",
+    "@primeuix/themes": "^2.0.2",
+    "@primevue/themes": "^4.5.4",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vue-deckgl-suite/layers": "^1.0.0-beta.6",
+    "@vue-deckgl-suite/maplibre": "^1.0.0-beta.6",
+    "live_vue": "file:../deps/live_vue",
+    "maplibre-gl": "^5.15.0",
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix_live_view": "file:../deps/phoenix_live_view",
+    "primevue": "^4.5.4",
+    "tailwindcss": "^4.1.18",
+    "topbar": "^2.0.2",
+    "vue": "^3.4.21"
   }
 }

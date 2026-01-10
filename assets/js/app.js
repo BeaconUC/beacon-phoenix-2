@@ -22,18 +22,26 @@ import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
-import {hooks as colocatedHooks} from "phoenix-colocated/beacon"
-import topbar from "../vendor/topbar"
+// import {hooks as colocatedHooks} from "phoenix-colocated/beacon"
+import topbar from "topbar"
 import { Geolocation } from "./hooks/Geolocation"
+
+import {getHooks} from "live_vue"
+import liveVueApp from "../vue"
+import "../css/app.css";
 
 const Hooks = {}
 Hooks.Geolocation = Geolocation
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
-  longPollFallbackMs: 2500,
+  // longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks, ...Hooks},
+  hooks: {
+    // ...colocatedHooks,
+    ...Hooks,
+    ...getHooks(liveVueApp)
+  },
 })
 
 // Show progress bar on live navigation and form submits
