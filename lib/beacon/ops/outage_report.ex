@@ -4,6 +4,7 @@ defmodule Beacon.Ops.OutageReport do
   alias Beacon.{Constant, Enum}
 
   @schema_prefix "ops"
+  @derive {LiveVue.Encoder, only: [:id, :public_id, :description, :status, :created_at, :location]}
 
   schema "outage_reports" do
     field :public_id, Ecto.UUID, autogenerate: false, read_after_writes: true
