@@ -27,10 +27,15 @@
                 "jakebecker.elixir-ls",
                 "phoenixframework.phoenix",
                 "onsever.phoenix-pulse",
-                "oderwat.indent-rainbow"
+                "oderwat.indent-rainbow",
+                "mhutchie.git-graph",
+                "ecmel.vscode-html-css",
+                "ms-vscode.vscode-typescript-next",
+                "bradlc.vscode-tailwindcss",
+                "vue.volar"
             ]
         }
     },
 
-    "postCreateCommand": "git config --global --add safe.directory /app"
+    "postStartCommand": "mix phx.server"
 }
