@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     vim \
+    tree \
     inotify-tools \
     postgresql-client
 
