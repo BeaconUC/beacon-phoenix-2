@@ -28,7 +28,7 @@ defmodule Beacon.Ops do
 
   defp broadcast({:ok, outage}, event)
        when event in [:outage_created, :outage_updated, :outage_deleted] do
-    Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_topic, {event, outage})
+    Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_topic}:lobby", {event, outage})
     Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_topic}:#{outage.id}", {event, outage})
 
     {:ok, outage}
@@ -36,7 +36,7 @@ defmodule Beacon.Ops do
 
   defp broadcast({:ok, outage_report}, event)
        when event in [:outage_report_created, :outage_report_updated, :outage_report_deleted] do
-    Phoenix.PubSub.broadcast(Beacon.PubSub, @outage_report_topic, {event, outage_report})
+    Phoenix.PubSub.broadcast(Beacon.PubSub, "#{@outage_report_topic}:lobby", {event, outage_report})
 
     Phoenix.PubSub.broadcast(
       Beacon.PubSub,
@@ -59,8 +59,15 @@ defmodule Beacon.Ops do
 
   """
   def list_outages(%Scope{} = _scope) do
-    query = from o in Outage, order_by: [desc: o.updated_at], limit: 100
+    query = from o in Outage, order_by: [desc: o.updated_at], limit: 1000
     Repo.all(query)
+    |> Repo.preload(:affected_areas)
+  end
+
+  def list_outages do
+    query = from o in Outage, order_by: [desc: o.updated_at], limit: 1000
+    Repo.all(query)
+    |> Repo.preload(:affected_areas)
   end
 
   @doc """
@@ -186,7 +193,7 @@ defmodule Beacon.Ops do
   Subscribes to scoped notifications about any outage_report changes.
   """
   def subscribe_outage_reports(%Scope{} = _scope) do
-    Phoenix.PubSub.subscribe(Beacon.PubSub, @outage_report_topic)
+    Phoenix.PubSub.subscribe(Beacon.PubSub, "#{@outage_report_topic}:lobby")
   end
 
   def subscribe_outage_reports(%Scope{} = _scope, id) do
@@ -203,7 +210,12 @@ defmodule Beacon.Ops do
 
   """
   def list_outage_reports(%Scope{} = _scope) do
-    query = from o in OutageReport, order_by: [desc: o.updated_at], limit: 100
+    query = from o in OutageReport, order_by: [desc: o.updated_at], limit: 20
+    Repo.all(query)
+  end
+
+  def list_outage_reports do
+    query = from o in OutageReport, order_by: [desc: o.updated_at], limit: 20
     Repo.all(query)
   end
 

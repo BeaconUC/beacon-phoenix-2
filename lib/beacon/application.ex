@@ -9,6 +9,7 @@ defmodule Beacon.Application do
   def start(_type, _args) do
     children = [
       {NodeJS.Supervisor, [path: LiveVue.SSR.NodeJS.server_path(), pool_size: 4]},
+      {GRPC.Server.Supervisor, endpoint: BeaconWeb.Grpc.Endpoint, port: 50051},
       BeaconWeb.Telemetry,
       Beacon.Repo,
       {DNSCluster, query: Application.get_env(:beacon, :dns_cluster_query) || :ignore},

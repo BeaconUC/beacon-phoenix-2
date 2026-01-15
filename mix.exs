@@ -40,6 +40,8 @@ defmodule Beacon.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:grpc, "~> 0.11"},
+      {:protobuf, "~> 0.14"},
       {:live_vue, "~> 1.0.0-rc.4"},
       {:geo, "~> 4.1"},
       {:geo_postgis, "~> 3.7.1"},

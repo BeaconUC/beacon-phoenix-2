@@ -31,8 +31,8 @@ defmodule Beacon.Ops.Outage do
     belongs_to :created_by_profile, Beacon.Iam.Profile, foreign_key: :created_by
     belongs_to :updated_by_profile, Beacon.Iam.Profile, foreign_key: :updated_by
 
-    # has_many :affected_areas, Beacon.Ops.AffectedArea
-    # has_many :barangays, through: [:affected_areas, :barangay]
+    has_many :affected_areas, Beacon.Ops.AffectedArea
+    has_many :barangays, through: [:affected_areas, :barangay]
 
     # has_many :assignments, Beacon.Ops.Assignment
     # has_many :outage_updates, Beacon.Ops.OutageUpdate
